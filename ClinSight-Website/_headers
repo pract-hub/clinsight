@@ -1,2 +1,12 @@
 /sitemap.xml
   Content-Type: application/xml; charset=UTF-8
+
+/
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+
+/targets/*
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+
+/trials/*
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+

@@ -19,6 +19,10 @@ def token_in_line(anchor, norm_line):
     return anchor in norm_line
 
 def fetch_study_api(nct_id):
+    local_path = os.path.join("ClinSight-Website", "data", "raw_api_v2", f"{nct_id}.json")
+    if os.path.exists(local_path):
+        with open(local_path, "r", encoding="utf-8") as f:
+            return json.load(f)
     url = f"https://clinicaltrials.gov/api/v2/studies/{nct_id}"
     req = urllib.request.Request(url, headers={"User-Agent": "ClinSight-Integrity-Engine/1.0"})
     try:
@@ -503,13 +507,72 @@ def extract_dossier_data(raw, downgrades_log, unmatched_elig_log, dlt_rejections
     # MODULE 4: Statutory Resolution & Document Access
     # -------------------------------------------------------------
     has_results = status_m.get("resultsFirstSubmitDate") is not None
-    pmids = [r.get("pmid") for r in ref_m.get("references", []) if r.get("pmid")]
-            
+    intervention_names = [i.get("name", "") for i in arms_m.get("interventions", []) if i.get("name")]
+    # Extract primary investigational drug code tokens (e.g., "STC-15", "EP102")
+    drug_tokens = []
+    for iname in intervention_names:
+        for tok in re.findall(r"[A-Za-z]{2,}-?\d+", iname):
+            drug_tokens.append(tok.lower())
+
+    pmids = []
+    rejected_references = []
+    for r in ref_m.get("references", []):
+        pmid = r.get("pmid")
+        if not pmid:
+            continue
+        ref_type = (r.get("type") or "").upper()
+        citation = r.get("citation") or ""
+        norm_cit = citation.lower()
+
+        # Gate 1: Never surface DERIVED (algorithm-linked) references
+        if ref_type == "DERIVED":
+            rejected_references.append({
+                "pmid": pmid,
+                "type": ref_type,
+                "reason": "REJECTED_DERIVED_AUTO_LINKED",
+                "citation": citation
+            })
+            downgrades_log.append({
+                "nct": nct_id,
+                "field": "module4.pmids",
+                "pmid": pmid,
+                "ref_type": ref_type,
+                "action": "REJECTED_DERIVED_REFERENCE",
+                "citation": citation
+            })
+            continue
+
+        # Gate 2: Only RESULT or compound/NCT-verified BACKGROUND references
+        if ref_type == "RESULT":
+            pmids.append(pmid)
+        elif ref_type == "BACKGROUND":
+            matches_nct = nct_id.lower() in norm_cit
+            matches_drug = any(dt in norm_cit for dt in drug_tokens)
+            if matches_nct or matches_drug:
+                pmids.append(pmid)
+            else:
+                rejected_references.append({
+                    "pmid": pmid,
+                    "type": ref_type,
+                    "reason": "REJECTED_BACKGROUND_DIFFERENT_COMPOUND",
+                    "citation": citation
+                })
+                downgrades_log.append({
+                    "nct": nct_id,
+                    "field": "module4.pmids",
+                    "pmid": pmid,
+                    "ref_type": ref_type,
+                    "action": "REJECTED_BACKGROUND_UNMATCHED_COMPOUND",
+                    "expected_drugs": drug_tokens,
+                    "citation": citation
+                })
+
     module4_data = {
         "nct_url": f"https://clinicaltrials.gov/study/{nct_id}",
         "has_results": has_results,
         "results_url": f"https://clinicaltrials.gov/study/{nct_id}?tab=results" if has_results else None,
         "pmids": pmids,
+        "rejected_references": rejected_references,
         "ctis_id": None,
         "protocol_pdf": None
     }

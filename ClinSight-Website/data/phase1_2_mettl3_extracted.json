@@ -166,6 +166,7 @@
       "has_results": false,
       "results_url": null,
       "pmids": [],
+      "rejected_references": [],
       "ctis_id": null,
       "protocol_pdf": null
     }
@@ -337,9 +338,20 @@
       "nct_url": "https://clinicaltrials.gov/study/NCT07163325",
       "has_results": false,
       "results_url": null,
-      "pmids": [
-        "39883878",
-        "42210870"
+      "pmids": [],
+      "rejected_references": [
+        {
+          "pmid": "39883878",
+          "type": "BACKGROUND",
+          "reason": "REJECTED_BACKGROUND_DIFFERENT_COMPOUND",
+          "citation": "Dutheuil G, Oukoloff K, Korac J, Lenoir F, El Bousmaqui M, Probst N, Lapin A, Nakhabina G, Sorlet C, Parmentier N, Karila D, Ghavtadze N, Casault P, Claridge S, Sapmaz S, Slater MJ, Fraser GL. Discovery, Optimization, and Preclinical Pharmacology of EP652, a METTL3 Inhibitor with Efficacy in Liquid and Solid Tumor Models. J Med Chem. 2025 Feb 13;68(3):2981-3003. doi: 10.1021/acs.jmedchem.4c02225. Epub 2025 Jan 30."
+        },
+        {
+          "pmid": "42210870",
+          "type": "DERIVED",
+          "reason": "REJECTED_DERIVED_AUTO_LINKED",
+          "citation": "Abbad L, Chatziantoniou C. Discovering New Therapies for Kidney Fibrosis: The Promise of Epigenetic and Epitranscriptomic Modulation. J Am Soc Nephrol. 2026 Jul 1;37(7):1367-1369. doi: 10.1681/ASN.0000001136. Epub 2026 May 28. No abstract available."
+        }
       ],
       "ctis_id": null,
       "protocol_pdf": null
@@ -512,6 +524,7 @@
       "has_results": false,
       "results_url": null,
       "pmids": [],
+      "rejected_references": [],
       "ctis_id": null,
       "protocol_pdf": null
     }
