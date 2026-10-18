@@ -56,8 +56,16 @@ def format_status(raw_status):
         "RECRUITING": ("Recruiting", "pill-recruiting"),
         "COMPLETED": ("Completed", "pill-completed"),
         "ACTIVE_NOT_RECRUITING": ("Active, not recruiting", "pill-recruiting"),
+        "NOT_YET_RECRUITING": ("Not yet recruiting", "pill-recruiting"),
+        "ENROLLING_BY_INVITATION": ("Enrolling by invitation", "pill-recruiting"),
+        "SUSPENDED": ("Suspended", "pill-completed"),
+        "TERMINATED": ("Terminated", "pill-completed"),
+        "WITHDRAWN": ("Withdrawn", "pill-completed"),
     }
-    return mapping.get(raw_status, (raw_status.title(), "pill-completed"))
+    if raw_status in mapping:
+        return mapping[raw_status]
+    clean = raw_status.replace("_", " ").lower().capitalize()
+    return (clean, "pill-completed")
 
 
 def build_verified_model(dossier):
@@ -163,9 +171,36 @@ def build_verified_model(dossier):
         else " A separate DLT evaluation window is not specified in the registry outcome measures."
     )
 
-    alloc_val = dossier["module1"]["allocation"].get("value", "")
-    mask_val = dossier["module1"]["masking"].get("value", "")
-    imodel_val = dossier["module1"]["intervention_model"].get("value", "")
+    alloc_raw = dossier["module1"]["allocation"].get("value", "")
+    alloc_map = {
+        "NON_RANDOMIZED": "Non-randomized",
+        "RANDOMIZED": "Randomized",
+        "NA": "Not applicable",
+        "NOT_APPLICABLE": "Not applicable",
+    }
+    alloc_val = alloc_map.get(alloc_raw.upper(), alloc_raw.replace("_", " ").lower().capitalize()) if alloc_raw else "Not specified"
+
+    mask_raw = dossier["module1"]["masking"].get("value", "")
+    mask_map = {
+        "NONE": "Open label (none)",
+        "OPEN": "Open label",
+        "OPEN_LABEL": "Open label",
+        "SINGLE": "Single blind",
+        "DOUBLE": "Double blind",
+        "TRIPLE": "Triple blind",
+        "QUADRUPLE": "Quadruple blind",
+    }
+    mask_val = mask_map.get(mask_raw.upper(), mask_raw.replace("_", " ").lower().capitalize()) if mask_raw else "Not specified"
+
+    imodel_raw = dossier["module1"]["intervention_model"].get("value", "")
+    imodel_map = {
+        "SINGLE_GROUP": "Single group assignment",
+        "PARALLEL": "Parallel assignment",
+        "SEQUENTIAL": "Sequential assignment",
+        "FACTORIAL": "Factorial assignment",
+        "CROSSOVER": "Crossover assignment",
+    }
+    imodel_val = imodel_map.get(imodel_raw.upper(), imodel_raw.replace("_", " ").lower().capitalize()) if imodel_raw else "Not specified"
     allocation_str = f"{alloc_val} · Masking: {mask_val} · {imodel_val}"
 
     programmatic_synopsis = (
@@ -913,7 +948,7 @@ def render_target_hub_html(models):
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>METTL3 Inhibitors in Oncology (STC-15 vs EP102) — Protocol Comparison | ClinSight</title>
+  <title>METTL3 inhibitors — trial design comparison | ClinSight</title>
   <meta name="description" content="Side-by-side protocol comparison of clinical-stage oral METTL3 RNA methyltransferase inhibitors STC-15 (NCT06975293, NCT05584111) and EP102 (NCT07163325): escalation design, cohort schedules, DLT windows, washouts, and eligibility.">
   <link rel="canonical" href="{BASE_URL}/targets/mettl3-inhibitors/">
   <style>{SHARED_CSS}</style>
@@ -924,8 +959,8 @@ def render_target_hub_html(models):
   <main class="container">
     <div class="page-head">
       <div>
-        <div class="eyebrow"><a href="../../compare/">Comparator</a> &middot; RNA Epigenetics &middot; METTL3 Inhibitors</div>
-        <h1>METTL3 Inhibitors — Protocol &amp; Trial Design Comparison</h1>
+        <div class="eyebrow"><a href="../../compare/">Comparator</a> &middot; RNA Epigenetics</div>
+        <h1>METTL3 inhibitors — trial design comparison</h1>
         <p class="head-sub">Side-by-side comparison of all three interventional clinical trials of oral METTL3 RNA methyltransferase inhibitors: STORM Therapeutics&#x27; <strong>STC-15</strong> and Epics Therapeutics&#x27; <strong>EP102</strong>. Hover any cell or toggle sources for registry field provenance.</p>
       </div>
       <div class="toolbar">
@@ -939,7 +974,7 @@ def render_target_hub_html(models):
 
     <div class="synopsis-banner">
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:6px;">
-        <span class="eyebrow" style="margin:0;">Class Overview (Generated from Verified Table Fields)</span>
+        <span class="eyebrow" style="margin:0;">Class Overview</span>
         <button type="button" class="btn" id="btnCopyClassSyn" onclick="copyClassSynopsis()" style="padding:3px 10px; font-size:11.5px;">Copy overview</button>
       </div>
       <p id="classSynopsisText" style="font-size:13.5px; color:var(--text-high); line-height:1.65;">{escape_html(class_synopsis)}</p>

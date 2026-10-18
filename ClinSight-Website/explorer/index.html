@@ -525,7 +525,9 @@
                     <option value="">All Recruitment Statuses</option>
                     <option value="COMPLETED">Completed</option>
                     <option value="RECRUITING">Recruiting</option>
-                    <option value="ACTIVE_NOT_RECRUITING">Active, Not Recruiting</option>
+                    <option value="ACTIVE_NOT_RECRUITING">Active, not recruiting</option>
+                    <option value="NOT_YET_RECRUITING">Not yet recruiting</option>
+                    <option value="ENROLLING_BY_INVITATION">Enrolling by invitation</option>
                 </select>
 
                 <select id="sortSelect" class="filter-select" onchange="applyFilters()">
@@ -647,8 +649,19 @@
                 listEl.innerHTML = `<div style="text-align:center; padding:48px 20px; color:var(--text-low);">No trials match your search filters. Try adjusting keywords or clearing filters.</div>`;
             } else {
                 listEl.innerHTML = pageItems.map(t => {
-                    const statusClass = t.isCompleted ? 'completed' : ((t.status || '').toUpperCase() === 'RECRUITING' ? 'recruiting' : 'phase');
-                    const displayStatus = t.isCompleted ? 'Completed' : (t.status ? t.status.replace(/_/g, ' ') : 'Active');
+                    const sRaw = (t.status || '').toUpperCase();
+                    const statusClass = t.isCompleted ? 'completed' : (sRaw === 'RECRUITING' ? 'recruiting' : 'phase');
+                    const statusMap = {
+                        'COMPLETED': 'Completed',
+                        'RECRUITING': 'Recruiting',
+                        'ACTIVE_NOT_RECRUITING': 'Active, not recruiting',
+                        'NOT_YET_RECRUITING': 'Not yet recruiting',
+                        'ENROLLING_BY_INVITATION': 'Enrolling by invitation',
+                        'SUSPENDED': 'Suspended',
+                        'TERMINATED': 'Terminated',
+                        'WITHDRAWN': 'Withdrawn'
+                    };
+                    const displayStatus = t.isCompleted ? 'Completed' : (statusMap[sRaw] || (t.status ? t.status.replace(/_/g, ' ').toLowerCase().replace(/^\w/, c => c.toUpperCase()) : 'Active'));
                     const condition = (t.conditions && t.conditions[0]) ? t.conditions[0] : 'Indication Not Specified';
                     const regimen = (t.interventions && t.interventions.length > 0) ? t.interventions.slice(0, 3).join(', ') : '';
 

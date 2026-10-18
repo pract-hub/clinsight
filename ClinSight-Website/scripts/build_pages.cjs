@@ -27,22 +27,22 @@ function escapeHtml(str) {
 }
 
 function formatStatus(status) {
-  if (!status) return 'Status Not Specified';
+  if (!status) return 'Status not specified';
   const s = String(status).trim().toUpperCase();
   const map = {
-    'ACTIVE_NOT_RECRUITING': 'Active, Not Recruiting',
+    'ACTIVE_NOT_RECRUITING': 'Active, not recruiting',
     'RECRUITING': 'Recruiting',
-    'ENROLLING_BY_INVITATION': 'Enrolling by Invitation',
-    'NOT_YET_RECRUITING': 'Not Yet Recruiting',
+    'ENROLLING_BY_INVITATION': 'Enrolling by invitation',
+    'NOT_YET_RECRUITING': 'Not yet recruiting',
     'COMPLETED': 'Completed',
     'SUSPENDED': 'Suspended',
     'TERMINATED': 'Terminated',
     'WITHDRAWN': 'Withdrawn',
     'AVAILABLE': 'Available',
-    'APPROVED_FOR_MARKETING': 'Approved for Marketing'
+    'APPROVED_FOR_MARKETING': 'Approved for marketing'
   };
   if (map[s]) return map[s];
-  return status.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  return status.replace(/_/g, ' ').toLowerCase().replace(/^\w/, c => c.toUpperCase());
 }
 
 function renderTrialPage(trial, allTrials) {
