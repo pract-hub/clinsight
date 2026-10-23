@@ -13,7 +13,7 @@ Strict guarantees:
 import os
 import json
 
-BASE_URL = "https://clinsight.ket-thm4u.workers.dev"
+BASE_URL = "https://clinsight.pract.eu"
 DATA_FILE = "ClinSight-Website/data/phase1_2_mettl3_extracted.json"
 RAW_DIR = "ClinSight-Website/data/raw_api_v2"
 TRIALS_DIR = "ClinSight-Website/trials"

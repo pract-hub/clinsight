@@ -15,4 +15,4 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-Sitemap: https://clinsight.ket-thm4u.workers.dev/sitemap.xml
+Sitemap: https://clinsight.pract.eu/sitemap.xml
