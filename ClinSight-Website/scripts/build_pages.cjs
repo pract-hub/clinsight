@@ -998,7 +998,15 @@ function buildSitemap(trials) {
   urls.push('  <url>\n    <loc>' + BASE_URL + '/explorer/</loc>\n    <lastmod>' + today + '</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.9</priority>\n  </url>');
   urls.push('  <url>\n    <loc>' + BASE_URL + '/compare/</loc>\n    <lastmod>' + today + '</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.9</priority>\n  </url>');
   urls.push('  <url>\n    <loc>' + BASE_URL + '/compare/myeloma-car-t-bispecific-adc/</loc>\n    <lastmod>' + today + '</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.9</priority>\n  </url>');
-  urls.push('  <url>\n    <loc>' + BASE_URL + '/jobs/</loc>\n    <lastmod>' + today + '</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.9</priority>\n  </url>');
+  urls.push('  <url>\n    <loc>' + BASE_URL + '/jobs/</loc>\n    <lastmod>' + today + '</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.95</priority>\n  </url>');
+  // Target-Class Protocol & Regulatory Intelligence Hubs
+  urls.push('  <!-- Target-Class Protocol & Regulatory Intelligence Hubs -->');
+  urls.push('  <url>\n    <loc>' + BASE_URL + '/targets/mettl3-inhibitors/</loc>\n    <lastmod>' + today + '</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.95</priority>\n  </url>');
+  // Externally Verified Phase 1/2 Protocol Dossiers Passing >=50% Density Gate
+  urls.push('  <!-- Externally Verified Phase 1/2 Protocol Dossiers Passing ≥50% (≥9/18) Module 1–3 Density Gate -->');
+  for (const p12 of ['NCT07163325', 'NCT06975293', 'NCT05584111']) {
+    urls.push('  <url>\n    <loc>' + BASE_URL + '/trials/' + p12 + '/</loc>\n    <lastmod>' + today + '</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.90</priority>\n  </url>');
+  }
 
   // The Top Curated Landmark Studies (Primary Clinical Evidentiary Anchors)
   const landmarkNcts = new Set([
