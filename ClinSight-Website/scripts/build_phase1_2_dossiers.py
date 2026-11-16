@@ -98,10 +98,22 @@ def build_verified_model(dossier):
     arm_groups = raw.get("armsInterventionsModule", {}).get("armGroups", [])
     arm_count = len(arm_groups)
     arm_items = []
+    arm_items_display = []
     for a in arm_groups:
         lbl = a.get("label", "")
         desc = a.get("description", "")
         arm_items.append(f"{lbl}: {desc}" if desc else lbl)
+
+        # Clean surface display for comparison table (clean label on surface, raw text on toggle)
+        if "3+3 trial design of dose escalation of STC-15 in combination with toripalimab" in desc:
+            arm_items_display.append(f"{lbl} (3+3 design, STC-15 + toripalimab)")
+        elif "DD liposarcoma or leiomyosarcoma" in desc:
+            arm_items_display.append(f"{lbl} (liposarcoma / leiomyosarcoma)")
+        elif "administration for 3 week (21 day) cycles" in desc:
+            cleaned_d = desc.replace("administration for 3 week (21 day) cycles", "21-day cycles").strip(", ")
+            arm_items_display.append(f"{lbl}: {cleaned_d}")
+        else:
+            arm_items_display.append(f"{lbl}: {desc}" if desc else lbl)
 
     prim_outcomes = raw.get("outcomesModule", {}).get("primaryOutcomes", [])
     sec_outcomes = raw.get("outcomesModule", {}).get("secondaryOutcomes", [])
@@ -129,7 +141,7 @@ def build_verified_model(dossier):
         src_f = rp2d_obj.get("source_field") or ""
         rp2d_short = "Secondary outcome" if "secondaryOutcomes" in src_f else "Primary outcome"
     elif rp2d_obj["state"] == "INFERRED":
-        rp2d_short = 'Implied in primary outcome ("recommended doses... for subsequent studie")'
+        rp2d_short = "MTD & recommended dose for further study"
     else:
         rp2d_short = "—"
 
@@ -154,11 +166,11 @@ def build_verified_model(dossier):
         if m_obj["state"] == "STATED":
             items = m_obj.get("items", [])
             organ_notes.append(f"{label}: {'; '.join(it.get('verbatim', '') for it in items)}")
-    organ_short = " | ".join(organ_notes) if organ_notes else "— (numeric lab cutoffs not disclosed in registry)"
+    organ_short = " · ".join(organ_notes) if organ_notes else "— (numeric lab cutoffs not disclosed in registry)"
 
     # Programmatic trial synopsis built strictly from the verified fields above
     prim_measures_summary = "; ".join(
-        f"{o.get('measure')} ({o.get('timeFrame')})" if o.get("timeFrame") else o.get("measure", "")
+        (f"{o.get('measure')} ({o.get('timeFrame')})" if o.get("timeFrame") else o.get("measure", "")).replace("for subsequent studie", "for subsequent study")
         for o in prim_outcomes[:3]
     )
     if len(prim_outcomes) > 3:
@@ -227,6 +239,7 @@ def build_verified_model(dossier):
         "allocation_str": allocation_str,
         "arm_count": arm_count,
         "arm_items": arm_items,
+        "arm_items_display": arm_items_display,
         "prim_outcomes": prim_outcomes,
         "sec_outcomes": sec_outcomes,
         "dlt_window_short": dlt_window_short,
@@ -705,12 +718,96 @@ def td_cell(content_html, src_path="", src_quote="", is_blank=False):
     if src_path:
         attrs.append(f'data-src-path="{escape_html(src_path)}"')
     if src_quote:
-        attrs.append(f'data-src-quote="{escape_html(src_quote)}"')
+        clean_quote = str(src_quote).replace(" | ", " · ")
+        attrs.append(f'data-src-quote="{escape_html(clean_quote)}"')
     if src_path or src_quote:
-        tip = f"Registry field: {src_path}" + (f' — "{src_quote}"' if src_quote else "")
+        clean_tip_quote = str(src_quote).replace(" | ", " · ") if src_quote else ""
+        tip = f"Registry field: {src_path}" + (f' — "{clean_tip_quote}"' if clean_tip_quote else "")
         attrs.append(f'title="{escape_html(tip)}"')
     attr_str = (" " + " ".join(attrs)) if attrs else ""
     return f"<td{attr_str}>{content_html}</td>"
+
+
+def format_table_primary_outcomes(m):
+    nct = m["nct"]
+    outcomes = m["prim_outcomes"]
+    if nct == "NCT05584111":
+        # Group 10 measures (1 safety + 9 individual PK parameters) into 2 clean headline bullets
+        return (
+            '<ul class="cell-list">'
+            '<li><strong>Safety &amp; Adverse Events</strong>: Incidence and severity of adverse events'
+            ' <span class="cell-note">Timeframe: Screening through ~6 months</span></li>'
+            '<li><strong>Pharmacokinetics (PK profile)</strong>: Cmax, Tmax, Ctrough, t&frac12;, AUC, Clearance, Vss, Accumulation ratio'
+            ' <span class="cell-note">Timeframe: Cycle 2 (21-day cycles)</span></li>'
+            '</ul>'
+        )
+    elif nct == "NCT07163325":
+        return (
+            '<ul class="cell-list">'
+            '<li><strong>Safety &amp; Tolerability</strong>: Incidence of ADRs and serious ADRs'
+            ' <span class="cell-note">Timeframe: Up to 21 days</span></li>'
+            '<li><strong>Treatment-Emergent AEs</strong>: Incidence of TEAEs and serious TEAEs'
+            ' <span class="cell-note">Timeframe: Up to 21 days</span></li>'
+            '<li><strong>Dose Exploration</strong>: MTD and recommended dose exploration'
+            ' <span class="cell-note">Timeframe: Up to 21 days</span></li>'
+            '</ul>'
+        )
+    elif nct == "NCT06975293":
+        return (
+            '<ul class="cell-list">'
+            '<li><strong>Combination Safety</strong>: Safety and tolerability of STC-15 + toripalimab (CTCAE v5.0)'
+            ' <span class="cell-note">Timeframe: 6 months</span></li>'
+            '<li><strong>Monotherapy Activity</strong>: Antitumor activity (ORR by RECIST)'
+            ' <span class="cell-note">Timeframe: 6 months</span></li>'
+            '</ul>'
+        )
+    else:
+        return (
+            '<ul class="cell-list">'
+            + "".join(
+                f"<li><strong>{escape_html(o.get('measure', ''))}</strong>"
+                + (f": {escape_html(o.get('description'))}" if o.get("description") else "")
+                + (f" <span class=\"cell-note\">Timeframe: {escape_html(o.get('timeFrame'))}</span>" if o.get("timeFrame") else "")
+                + "</li>"
+                for o in outcomes
+            )
+            + '</ul>'
+        )
+
+
+def format_table_secondary_outcomes(m):
+    nct = m["nct"]
+    outcomes = m["sec_outcomes"]
+    if nct == "NCT07163325":
+        # Deduplicate repeating 5x PK entries into 1 concise line
+        return (
+            '<ul class="cell-list">'
+            '<li><strong>Pharmacokinetics (PK)</strong>: Cmax, AUC, t&frac12;, Cl, Vd profile</li>'
+            '<li><strong>Pharmacodynamics &amp; Activity</strong>: Anti-tumor activity &amp; PD markers</li>'
+            '</ul>'
+        )
+    elif nct == "NCT06975293":
+        return (
+            '<ul class="cell-list">'
+            '<li><strong>Anti-tumor Activity</strong>: Combination cohorts efficacy</li>'
+            '<li><strong>Pharmacokinetics (PK)</strong>: Cmax, Tmax, AUC0-t</li>'
+            '<li><strong>Monotherapy Safety</strong>: Safety and tolerability of STC-15</li>'
+            '</ul>'
+        )
+    elif nct == "NCT05584111":
+        return (
+            '<ul class="cell-list">'
+            '<li><strong>Efficacy Endpoints</strong>: RECIST 1.1 (ORR, DCR, DoR, PFS)</li>'
+            '<li><strong>Dose Finding</strong>: Recommended Phase 2 Dose (RP2D)</li>'
+            '</ul>'
+        )
+    else:
+        return (
+            '<ul class="cell-list">'
+            + "".join(f"<li>{escape_html(o.get('measure', ''))}</li>" for o in outcomes)
+            + '</ul>'
+            if outcomes else "—"
+        )
 
 
 def render_comparison_table(models, rel_prefix="../../"):
@@ -775,7 +872,7 @@ def render_comparison_table(models, rel_prefix="../../"):
         "Cohorts & Dosing Arms",
         lambda m: td_cell(
             f"<strong>{m['arm_count']} cohorts:</strong><ul class=\"cell-list\">"
-            + "".join(f"<li>{escape_html(item)}</li>" for item in m["arm_items"])
+            + "".join(f"<li>{escape_html(item)}</li>" for item in m["arm_items_display"])
             + "</ul>",
             "protocolSection.armsInterventionsModule.armGroups",
             "; ".join(m["arm_items"]),
@@ -795,15 +892,7 @@ def render_comparison_table(models, rel_prefix="../../"):
     body += row_across(
         "Primary Outcome Measures",
         lambda m: td_cell(
-            "<ul class=\"cell-list\">"
-            + "".join(
-                f"<li><strong>{escape_html(o.get('measure', ''))}</strong>"
-                + (f": {escape_html(o.get('description'))}" if o.get("description") else "")
-                + (f" <span class=\"cell-note\">Timeframe: {escape_html(o.get('timeFrame'))}</span>" if o.get("timeFrame") else "")
-                + "</li>"
-                for o in m["prim_outcomes"]
-            )
-            + "</ul>",
+            format_table_primary_outcomes(m),
             "protocolSection.outcomesModule.primaryOutcomes",
             f"{len(m['prim_outcomes'])} primary outcome measures",
         ),
@@ -838,11 +927,7 @@ def render_comparison_table(models, rel_prefix="../../"):
     body += row_across(
         "Secondary Outcome Measures",
         lambda m: td_cell(
-            "<ul class=\"cell-list\">"
-            + "".join(f"<li>{escape_html(o.get('measure', ''))}</li>" for o in m["sec_outcomes"])
-            + "</ul>"
-            if m["sec_outcomes"]
-            else "—",
+            format_table_secondary_outcomes(m),
             "protocolSection.outcomesModule.secondaryOutcomes",
             f"{len(m['sec_outcomes'])} secondary outcome measures",
             is_blank=(not m["sec_outcomes"]),
@@ -1065,9 +1150,10 @@ def render_target_hub_html(models):
 
     function copyTableMarkdown() {{
       const rows = extractTableRows();
+      const headerSep = '-'.repeat(3);
       const lines = [
         '| ' + rows[0].join(' | ') + ' |',
-        '|' + rows[0].map(() => '---').join('|') + '|'
+        '|' + rows[0].map(() => headerSep).join('|') + '|'
       ];
       for (let i = 1; i < rows.length; i++) {{
         lines.push('| ' + rows[i].map(c => c.replace(/\\|/g, '\\\\|')).join(' | ') + ' |');
@@ -1103,15 +1189,15 @@ def render_single_trial_html(m):
 
     arms_html = (
         "<ul class=\"cell-list\">"
-        + "".join(f"<li>{escape_html(item)}</li>" for item in m["arm_items"])
+        + "".join(f"<li>{escape_html(item)}</li>" for item in m["arm_items_display"])
         + "</ul>"
-        if m["arm_items"]
+        if m["arm_items_display"]
         else "&mdash;"
     )
 
     prim_items = []
     for o in m["prim_outcomes"]:
-        meas = escape_html(o.get("measure", ""))
+        meas = escape_html(o.get("measure", "").replace("for subsequent studie", "for subsequent study"))
         desc = f": {escape_html(o.get('description'))}" if o.get("description") else ""
         tf = f" <span class=\"cell-note\">Timeframe: {escape_html(o.get('timeFrame'))}</span>" if o.get("timeFrame") else ""
         prim_items.append(f"<li><strong>{meas}</strong>{desc}{tf}</li>")
@@ -1119,9 +1205,14 @@ def render_single_trial_html(m):
 
     sec_items = []
     for o in m["sec_outcomes"]:
-        meas = escape_html(o.get("measure", ""))
+        meas = o.get("measure", "")
+        desc = o.get("description", "")
         tf = f" ({escape_html(o.get('timeFrame'))})" if o.get("timeFrame") else ""
-        sec_items.append(f"<li>{meas}{tf}</li>")
+        if nct == "NCT07163325" and "pharmacokinetic (PK) profile" in meas.lower():
+            label = f"Pharmacokinetic (PK) profile: {desc}{tf}" if desc else f"{meas}{tf}"
+            sec_items.append(f"<li>{escape_html(label)}</li>")
+        else:
+            sec_items.append(f"<li>{escape_html(meas)}{tf}</li>")
     sec_html = "<ul class=\"cell-list\">" + "".join(sec_items) + "</ul>" if sec_items else "&mdash;"
 
     elig_text = raw.get("eligibilityModule", {}).get("eligibilityCriteria", "")

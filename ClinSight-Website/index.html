@@ -243,6 +243,36 @@
             text-decoration: none;
         }
         .footer-links a:hover { color: var(--cyan); }
+
+        @media (max-width: 600px) {
+            .site-nav {
+                padding: 12px 16px;
+            }
+            .nav-links {
+                gap: 14px;
+            }
+            .nav-links a {
+                font-size: 13px;
+                white-space: nowrap;
+            }
+            main {
+                padding: 40px 16px 56px;
+            }
+            .hero {
+                margin-bottom: 44px;
+            }
+            .hero-title {
+                font-size: 30px;
+                letter-spacing: -0.02em;
+            }
+            .hero-sub {
+                font-size: 15.5px;
+                margin-bottom: 22px;
+            }
+            .hero-actions {
+                gap: 14px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -252,7 +282,6 @@
             <div class="nav-links">
                 <a href="/targets/mettl3-inhibitors/">METTL3 comparison</a>
                 <a href="/explorer/">Trials explorer</a>
-                <a href="/compare/">Comparator</a>
                 <button type="button" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle theme">Theme</button>
             </div>
         </div>
@@ -261,10 +290,10 @@
     <main>
         <div class="hero">
             <h1 class="hero-title">Compare every trial in a drug class, side by side.</h1>
-            <p class="hero-sub">Dose escalation designs, DLT evaluation windows, patient eligibility cutoffs, and clinical endpoints on one screen — pulled directly from registry records and traceable to the statutory source.</p>
+            <p class="hero-sub">Dose escalation designs, DLT evaluation windows, patient eligibility cutoffs, and primary endpoints on one screen — pulled directly from ClinicalTrials.gov.</p>
             <div class="hero-actions">
                 <a href="/targets/mettl3-inhibitors/" class="btn-primary">See the METTL3 comparison &rarr;</a>
-                <a href="/explorer/" class="link-secondary">Search 930 indexed clinical trials &rarr;</a>
+                <a href="/explorer/" class="link-secondary">Search 1,058 indexed clinical trials &rarr;</a>
             </div>
         </div>
 
