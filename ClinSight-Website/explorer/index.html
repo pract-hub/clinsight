@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clinical Trials Explorer | ClinSight</title>
-    <meta name="description" content="Search and filter verified clinical trials, primary study protocols, SAPs, and clinical results across oncology, rare diseases, and cardiometabolic pipelines.">
+    <title>ClinSight</title>
+    <meta name="description" content="Search and filter clinical trials, study protocols, SAPs, and clinical results across oncology, rare diseases, and cardiometabolic pipelines.">
     <link rel="canonical" href="https://clinsight.pract.eu/explorer/">
     <style>
         :root {
@@ -475,17 +475,12 @@
     <nav class="site-nav">
         <div class="nav-inner">
             <a href="/" class="nav-brand">
-                <div class="logo-text">ClinSight<span>™</span></div>
-                <div class="logo-tag">Clinical Trials &amp; Evidence Generation</div>
+                <div class="logo-text">ClinSight</div>
             </a>
             <div class="nav-links">
-                <a href="/" class="nav-link-home">Home</a>
-                <a href="/explorer/" class="active">Trials Explorer</a>
                 <a href="/compare/">Comparator</a>
-                <a href="/jobs/">Careers</a>
-                <button type="button" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle appearance">
-                    <i class="fa-solid fa-circle-half-stroke"></i>
-                </button>
+                <a href="/explorer/" class="active">Trials explorer</a>
+                <button type="button" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle appearance">Theme</button>
             </div>
         </div>
     </nav>
@@ -493,7 +488,7 @@
     <div class="container">
         <div class="page-header">
             <h1>Clinical Trials Explorer</h1>
-            <p>Direct primary-source access to study designs, protocols, and evidence profiles.</p>
+            <p>Search and filter study designs, protocols, and clinical endpoints.</p>
         </div>
 
         <div class="explorer-controls">
@@ -641,7 +636,7 @@
             if (total === 0) {
                 countEl.textContent = 'No matching clinical trials found.';
             } else {
-                countEl.textContent = `Showing ${start + 1}–${end} of ${total.toLocaleString()} clinical trials`;
+                countEl.textContent = `Showing ${start + 1} to ${end} of ${total.toLocaleString()} clinical trials`;
             }
 
             const listEl = document.getElementById('studyList');
@@ -702,7 +697,7 @@
                         </div>
                         <div class="study-aside">
                             <div style="font-size:12px; font-family:var(--font-mono); color:var(--text-low); text-align:right;">
-                                <div>${t.year || '—'}</div>
+                                <div>${t.year || 'N/A'}</div>
                                 <div style="font-size:10px; text-transform:uppercase;">Year</div>
                             </div>
                             <a href="../trials/${t.nctId}/" class="view-dossier-btn">Dossier <i class="fa-solid fa-arrow-right"></i></a>

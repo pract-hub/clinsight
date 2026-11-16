@@ -128,13 +128,13 @@ def build_verified_model(dossier):
     elif raw_design:
         design_short = raw_design
     else:
-        design_short = "—"
+        design_short = "Not specified"
 
     dlt_win_obj = dossier["module3"]["dlt_window"]
-    dlt_window_short = (dlt_win_obj.get("value") or dlt_win_obj.get("verbatim") or "—") if dlt_win_obj["state"] == "STATED" else "—"
+    dlt_window_short = (dlt_win_obj.get("value") or dlt_win_obj.get("verbatim") or "Not specified") if dlt_win_obj["state"] == "STATED" else "Not specified"
 
     mtd_obj = dossier["module3"]["mtd"]
-    mtd_short = "Primary outcome" if mtd_obj["state"] == "STATED" else "—"
+    mtd_short = "Primary outcome" if mtd_obj["state"] == "STATED" else "Not specified"
 
     rp2d_obj = dossier["module3"]["rp2d"]
     if rp2d_obj["state"] == "STATED":
@@ -143,17 +143,17 @@ def build_verified_model(dossier):
     elif rp2d_obj["state"] == "INFERRED":
         rp2d_short = "MTD & recommended dose for further study"
     else:
-        rp2d_short = "—"
+        rp2d_short = "Not specified"
 
     tox_obj = dossier["module3"]["ctcae"]
-    tox_short = tox_obj["value"] if tox_obj["state"] == "STATED" else "—"
+    tox_short = tox_obj["value"] if tox_obj["state"] == "STATED" else "Not specified"
 
     # Washout & organ criteria from Module 2
     wash_obj = dossier["module2"]["washout"]
     wash_items = wash_obj.get("items", [])
-    wash_short = " ; ".join(it.get("verbatim", "") for it in wash_items) if wash_obj["state"] == "STATED" and wash_items else "—"
+    wash_short = " ; ".join(it.get("verbatim", "") for it in wash_items) if wash_obj["state"] == "STATED" and wash_items else "Not specified"
     wash_src = wash_items[0].get("source_field", "") if wash_items else ""
-    wash_quote = wash_short if wash_short != "—" else ""
+    wash_quote = wash_short if wash_short != "Not specified" else ""
 
     organ_notes = []
     for k, label in [
@@ -166,7 +166,7 @@ def build_verified_model(dossier):
         if m_obj["state"] == "STATED":
             items = m_obj.get("items", [])
             organ_notes.append(f"{label}: {'; '.join(it.get('verbatim', '') for it in items)}")
-    organ_short = " · ".join(organ_notes) if organ_notes else "— (numeric lab cutoffs not disclosed in registry)"
+    organ_short = " · ".join(organ_notes) if organ_notes else "Not specified"
 
     # Programmatic trial synopsis built strictly from the verified fields above
     prim_measures_summary = "; ".join(
@@ -179,8 +179,8 @@ def build_verified_model(dossier):
     pmid_clause = f" Linked PubMed records: {', '.join(f'PMID {p}' for p in pmids)}." if pmids else ""
     dlt_clause = (
         f" The DLT evaluation window is specified as '{dlt_window_short}'."
-        if dlt_window_short != "—"
-        else " A separate DLT evaluation window is not specified in the registry outcome measures."
+        if dlt_window_short != "Not specified"
+        else " A separate DLT evaluation window is not specified in the outcome measures."
     )
 
     alloc_raw = dossier["module1"]["allocation"].get("value", "")
@@ -313,6 +313,23 @@ SHARED_CSS = '''
       color-scheme: dark;
     }
 
+    :root[data-theme="light"] {
+      --bg-void: #f8fafc;
+      --bg-base: #ffffff;
+      --bg-surface: #f1f5f9;
+      --bg-elevated: #e2e8f0;
+      --border-subtle: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --cyan: #0284c7;
+      --cyan-glow: rgba(2, 132, 199, 0.08);
+      --purple: #7c3aed;
+      --emerald: #059669;
+      --text-high: #0f172a;
+      --text-med: #334155;
+      --text-low: #64748b;
+      color-scheme: light;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background: var(--bg-void);
@@ -326,44 +343,58 @@ SHARED_CSS = '''
     .site-nav {
       border-bottom: 1px solid var(--border-subtle);
       background: var(--bg-base);
-      padding: 12px 24px;
+      padding: 18px 32px;
       position: sticky;
       top: 0;
       z-index: 100;
-      backdrop-filter: blur(12px);
     }
     .nav-inner {
-      max-width: 1220px;
+      max-width: 1040px;
       margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
     }
     .nav-brand {
-      display: flex;
-      align-items: baseline;
-      gap: 10px;
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--cyan);
       text-decoration: none;
-      color: var(--text-high);
     }
-    .logo-text { font-size: 19px; font-weight: 700; color: var(--cyan); }
-    .logo-tag {
-      font-size: 12.5px;
-      color: var(--text-low);
-      border-left: 1px solid var(--border-subtle);
-      padding-left: 10px;
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
     }
-    @media (max-width: 640px) { .logo-tag { display: none; } }
-    .nav-links { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
     .nav-links a {
       color: var(--text-med);
       text-decoration: none;
-      font-size: 13.5px;
+      font-size: 14px;
       font-weight: 500;
+      transition: color 0.15s;
     }
     .nav-links a:hover, .nav-links a.active { color: var(--cyan); }
+    .theme-toggle-btn {
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-med);
+      padding: 6px 11px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12.5px;
+      display: inline-flex;
+      align-items: center;
+    }
+    .theme-toggle-btn:hover {
+      color: var(--text-high);
+      border-color: var(--border-strong);
+    }
+    @media (max-width: 600px) {
+      .site-nav { padding: 12px 16px; }
+      .nav-links { gap: 14px; }
+      .nav-links a { font-size: 13px; white-space: nowrap; }
+    }
 
     .container {
       max-width: 1220px;
@@ -692,38 +723,20 @@ def render_nav(rel_prefix="../../", active="compare"):
     return f'''
   <nav class="site-nav" aria-label="Primary Navigation">
     <div class="nav-inner">
-      <a href="{rel_prefix}" class="nav-brand">
-        <span class="logo-text">ClinSight™</span>
-        <span class="logo-tag">Clinical Trials &amp; Evidence Generation</span>
-      </a>
+      <a href="{rel_prefix}" class="nav-brand">ClinSight</a>
       <div class="nav-links">
-        <a href="{rel_prefix}">Home</a>
-        <a href="{rel_prefix}explorer/" class="{'active' if active=='explorer' else ''}">Trials Explorer</a>
         <a href="{rel_prefix}compare/" class="{'active' if active=='compare' else ''}">Comparator</a>
-        <a href="{rel_prefix}jobs/">Careers</a>
+        <a href="{rel_prefix}explorer/" class="{'active' if active=='explorer' else ''}">Trials explorer</a>
+        <button type="button" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle theme">Theme</button>
       </div>
     </div>
   </nav>'''
 
 
 def td_cell(content_html, src_path="", src_quote="", is_blank=False):
-    """
-    Renders a <td> with ZERO source path text inside the DOM node.
-    Provenance is stored in data-src-path and data-src-quote attributes (plus hover title)
-    so text readers and copy-paste never see JSON paths unless 'Show sources' is toggled on.
-    """
     attrs = []
     if is_blank:
         attrs.append('class="cell-blank"')
-    if src_path:
-        attrs.append(f'data-src-path="{escape_html(src_path)}"')
-    if src_quote:
-        clean_quote = str(src_quote).replace(" | ", " · ")
-        attrs.append(f'data-src-quote="{escape_html(clean_quote)}"')
-    if src_path or src_quote:
-        clean_tip_quote = str(src_quote).replace(" | ", " · ") if src_quote else ""
-        tip = f"Registry field: {src_path}" + (f' — "{clean_tip_quote}"' if clean_tip_quote else "")
-        attrs.append(f'title="{escape_html(tip)}"')
     attr_str = (" " + " ".join(attrs)) if attrs else ""
     return f"<td{attr_str}>{content_html}</td>"
 
@@ -903,7 +916,7 @@ def render_comparison_table(models, rel_prefix="../../"):
             escape_html(m["dlt_window_short"]),
             m["dlt_src"],
             m["dlt_quote"],
-            is_blank=(m["dlt_window_short"] == "—"),
+            is_blank=(m["dlt_window_short"] == "Not specified"),
         ),
     )
     body += row_across(
@@ -912,7 +925,7 @@ def render_comparison_table(models, rel_prefix="../../"):
             escape_html(m["mtd_short"]),
             m["mtd_src"],
             m["mtd_quote"],
-            is_blank=(m["mtd_short"] == "—"),
+            is_blank=(m["mtd_short"] == "Not specified"),
         ),
     )
     body += row_across(
@@ -921,7 +934,7 @@ def render_comparison_table(models, rel_prefix="../../"):
             escape_html(m["rp2d_short"]),
             m["rp2d_src"],
             m["rp2d_quote"],
-            is_blank=(m["rp2d_short"] == "—"),
+            is_blank=(m["rp2d_short"] == "Not specified"),
         ),
     )
     body += row_across(
@@ -939,7 +952,7 @@ def render_comparison_table(models, rel_prefix="../../"):
             escape_html(m["tox_short"]),
             m["tox_src"],
             m["tox_quote"],
-            is_blank=(m["tox_short"] == "—"),
+            is_blank=(m["tox_short"] == "Not specified"),
         ),
     )
 
@@ -951,7 +964,7 @@ def render_comparison_table(models, rel_prefix="../../"):
             escape_html(m["wash_short"]),
             m["wash_src"],
             m["wash_quote"],
-            is_blank=(m["wash_short"] == "—"),
+            is_blank=(m["wash_short"] == "Not specified"),
         ),
     )
     body += row_across(
@@ -960,7 +973,7 @@ def render_comparison_table(models, rel_prefix="../../"):
             escape_html(m["organ_short"]),
             "protocolSection.eligibilityModule.eligibilityCriteria",
             m["organ_short"],
-            is_blank=m["organ_short"].startswith("—"),
+            is_blank=(m["organ_short"] == "Not specified"),
         ),
     )
 
@@ -982,9 +995,9 @@ def render_comparison_table(models, rel_prefix="../../"):
                 for p in m["pmids"]
             )
             if m["pmids"]
-            else "—",
+            else "None",
             "protocolSection.referencesModule.references",
-            ", ".join(m["pmids"]) if m["pmids"] else "None linked in registry record",
+            ", ".join(m["pmids"]) if m["pmids"] else "None",
             is_blank=(not m["pmids"]),
         ),
     )
@@ -1033,7 +1046,7 @@ def render_target_hub_html(models):
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>METTL3 inhibitors — trial design comparison | ClinSight</title>
+  <title>ClinSight</title>
   <meta name="description" content="Side-by-side protocol comparison of clinical-stage oral METTL3 RNA methyltransferase inhibitors STC-15 (NCT06975293, NCT05584111) and EP102 (NCT07163325): escalation design, cohort schedules, DLT windows, washouts, and eligibility.">
   <link rel="canonical" href="{BASE_URL}/targets/mettl3-inhibitors/">
   <style>{SHARED_CSS}</style>
@@ -1045,12 +1058,11 @@ def render_target_hub_html(models):
     <div class="page-head">
       <div>
         <div class="eyebrow"><a href="../../compare/">Comparator</a> &middot; RNA Epigenetics</div>
-        <h1>METTL3 inhibitors — trial design comparison</h1>
-        <p class="head-sub">Side-by-side comparison of all three interventional clinical trials of oral METTL3 RNA methyltransferase inhibitors: STORM Therapeutics&#x27; <strong>STC-15</strong> and Epics Therapeutics&#x27; <strong>EP102</strong>. Hover any cell or toggle sources for registry field provenance.</p>
+        <h1>METTL3 inhibitors: trial design comparison</h1>
+        <p class="head-sub">Side-by-side comparison of clinical trials of oral METTL3 RNA methyltransferase inhibitors: STORM Therapeutics&#x27; <strong>STC-15</strong> and Epics Therapeutics&#x27; <strong>EP102</strong>.</p>
       </div>
       <div class="toolbar">
-        <button type="button" class="btn" id="btnSources" onclick="toggleSources()">Show sources</button>
-        <button type="button" class="btn" id="btnCopyMd" onclick="copyTableMarkdown()">Copy table (Markdown)</button>
+        <button type="button" class="btn" id="btnCopyMd" onclick="copyTableMarkdown()">Copy table</button>
         <button type="button" class="btn" onclick="exportTableCsv()">Export CSV</button>
       </div>
     </div>
@@ -1072,15 +1084,11 @@ def render_target_hub_html(models):
       {syn_cards}
     </div>
 
-    <div class="footnote">
-      <strong>Scope note:</strong> A fourth ClinicalTrials.gov record mentioning METTL3 (<code>NCT06762925</code>, Xijing Hospital) is a non-interventional observational tissue biomarker study with no drug regimen and is excluded from this drug comparison.
-    </div>
-
     <footer>
-      <div><strong>ClinSight™</strong> · Primary Registry Fact Base &middot; <a href="https://pract.eu" style="color:inherit; text-decoration:underline;">PRACT</a></div>
+      <div><strong>ClinSight</strong> &middot; <a href="https://pract.eu" style="color:inherit; text-decoration:underline;">PRACT</a></div>
       <div>
-        <a href="../../explorer/">Explorer</a> &middot;
         <a href="../../compare/">Comparator</a> &middot;
+        <a href="../../explorer/">Trials explorer</a> &middot;
         <a href="../../jobs/">Careers</a> &middot;
         <a href="../../sitemap.xml">Sitemap</a>
       </div>
@@ -1088,39 +1096,6 @@ def render_target_hub_html(models):
   </main>
 
   <script>
-    let sourcesOn = false;
-    function toggleSources() {{
-      sourcesOn = !sourcesOn;
-      const btn = document.getElementById('btnSources');
-      btn.classList.toggle('active', sourcesOn);
-      btn.textContent = sourcesOn ? 'Hide sources' : 'Show sources';
-
-      const cells = document.querySelectorAll('#mettl3ComparisonTable td[data-src-path]');
-      cells.forEach(td => {{
-        const existing = td.querySelector('.src-drawer');
-        if (existing) existing.remove();
-        if (sourcesOn) {{
-          const path = td.getAttribute('data-src-path') || '';
-          const quote = td.getAttribute('data-src-quote') || '';
-          const div = document.createElement('div');
-          div.className = 'src-drawer';
-          if (path) {{
-            const sPath = document.createElement('span');
-            sPath.className = 'src-path';
-            sPath.textContent = path;
-            div.appendChild(sPath);
-          }}
-          if (quote) {{
-            const sQuote = document.createElement('span');
-            sQuote.className = 'src-quote';
-            sQuote.textContent = '"' + quote + '"';
-            div.appendChild(sQuote);
-          }}
-          td.appendChild(div);
-        }}
-      }});
-    }}
-
     function copyClassSynopsis() {{
       const text = document.getElementById('classSynopsisText').innerText;
       navigator.clipboard.writeText(text).then(() => {{
@@ -1139,8 +1114,6 @@ def render_target_hub_html(models):
         if (tr.classList.contains('group-row')) continue;
         const cells = Array.from(tr.querySelectorAll('td')).map(td => {{
           const clone = td.cloneNode(true);
-          const drawer = clone.querySelector('.src-drawer');
-          if (drawer) drawer.remove();
           return clone.innerText.replace(/\\s+/g, ' ').trim();
         }});
         rows.push(cells);
@@ -1161,7 +1134,7 @@ def render_target_hub_html(models):
       navigator.clipboard.writeText(lines.join('\\n')).then(() => {{
         const btn = document.getElementById('btnCopyMd');
         btn.textContent = 'Copied!';
-        setTimeout(() => {{ btn.textContent = 'Copy table (Markdown)'; }}, 2000);
+        setTimeout(() => {{ btn.textContent = 'Copy table'; }}, 2000);
       }});
     }}
 
@@ -1178,6 +1151,15 @@ def render_target_hub_html(models):
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     }}
+
+    function toggleTheme() {{
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('clinsight_theme', next);
+    }}
+    const savedTheme = localStorage.getItem('clinsight_theme');
+    if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
   </script>
 </body>
 </html>'''
@@ -1192,7 +1174,7 @@ def render_single_trial_html(m):
         + "".join(f"<li>{escape_html(item)}</li>" for item in m["arm_items_display"])
         + "</ul>"
         if m["arm_items_display"]
-        else "&mdash;"
+        else "Not specified"
     )
 
     prim_items = []
@@ -1201,7 +1183,7 @@ def render_single_trial_html(m):
         desc = f": {escape_html(o.get('description'))}" if o.get("description") else ""
         tf = f" <span class=\"cell-note\">Timeframe: {escape_html(o.get('timeFrame'))}</span>" if o.get("timeFrame") else ""
         prim_items.append(f"<li><strong>{meas}</strong>{desc}{tf}</li>")
-    prim_html = "<ul class=\"cell-list\">" + "".join(prim_items) + "</ul>" if prim_items else "&mdash;"
+    prim_html = "<ul class=\"cell-list\">" + "".join(prim_items) + "</ul>" if prim_items else "Not specified"
 
     sec_items = []
     for o in m["sec_outcomes"]:
@@ -1213,7 +1195,7 @@ def render_single_trial_html(m):
             sec_items.append(f"<li>{escape_html(label)}</li>")
         else:
             sec_items.append(f"<li>{escape_html(meas)}{tf}</li>")
-    sec_html = "<ul class=\"cell-list\">" + "".join(sec_items) + "</ul>" if sec_items else "&mdash;"
+    sec_html = "<ul class=\"cell-list\">" + "".join(sec_items) + "</ul>" if sec_items else "Not specified"
 
     elig_text = raw.get("eligibilityModule", {}).get("eligibilityCriteria", "")
 
@@ -1222,7 +1204,7 @@ def render_single_trial_html(m):
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{escape_html(nct)} ({escape_html(m["phase_clean"])}) — {escape_html(m["title"])} | ClinSight</title>
+  <title>ClinSight</title>
   <meta name="description" content="{escape_html(nct)}: {escape_html(m["title"])}. Clinical synopsis, cohort schedules, primary outcomes, and eligibility criteria.">
   <link rel="canonical" href="{BASE_URL}/trials/{escape_html(nct)}/">
   <style>{SHARED_CSS}</style>
@@ -1234,7 +1216,7 @@ def render_single_trial_html(m):
     <div class="page-head">
       <div>
         <div class="eyebrow">
-          <a href="../../targets/mettl3-inhibitors/">&larr; Back to METTL3 Inhibitor Comparison Table</a>
+          <a href="../../targets/mettl3-inhibitors/">&larr; Back to METTL3 comparison</a>
         </div>
         <div class="th-badges" style="margin: 6px 0 8px;">
           <span class="pill pill-phase">{escape_html(nct)}</span>
@@ -1291,15 +1273,15 @@ def render_single_trial_html(m):
     </div>
 
     <div class="kv-card">
-      <div class="kv-title">Verbatim Registry Eligibility Criteria</div>
+      <div class="kv-title">Eligibility Criteria</div>
       <pre style="white-space:pre-wrap; font-family:var(--font-sans); font-size:13.5px; color:var(--text-med); line-height:1.6;">{escape_html(elig_text)}</pre>
     </div>
 
     <footer>
-      <div><strong>ClinSight™</strong> · Primary Registry Fact Base &middot; <a href="https://pract.eu" style="color:inherit; text-decoration:underline;">PRACT</a></div>
+      <div><strong>ClinSight</strong> &middot; <a href="https://pract.eu" style="color:inherit; text-decoration:underline;">PRACT</a></div>
       <div>
-        <a href="../../explorer/">Explorer</a> &middot;
         <a href="../../compare/">Comparator</a> &middot;
+        <a href="../../explorer/">Trials explorer</a> &middot;
         <a href="../../jobs/">Careers</a> &middot;
         <a href="../../sitemap.xml">Sitemap</a>
       </div>
@@ -1314,6 +1296,14 @@ def render_single_trial_html(m):
         setTimeout(() => {{ b.textContent = 'Copy synopsis'; }}, 2000);
       }});
     }}
+    function toggleTheme() {{
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('clinsight_theme', next);
+    }}
+    const savedTheme = localStorage.getItem('clinsight_theme');
+    if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
   </script>
 </body>
 </html>'''

@@ -1,215 +1,311 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Clinical Trial Comparators &amp; Matrices | ClinSight</title>
-<meta name="description" content="Side-by-side competitive intelligence matrices of landmark clinical trial programs. Benchmarking modalities, endpoints, and lines of therapy directly from primary registry records.">
-<link rel="canonical" href="https://clinsight.pract.eu/compare/">
-<style>
-  :root {
-    --bg-base: #0b0f19;
-    --bg-card: #131b2e;
-    --bg-subtle: #1a243b;
-    --border-subtle: rgba(255, 255, 255, 0.08);
-    --border-hover: rgba(255, 255, 255, 0.16);
-    --text-high: #f8fafc;
-    --text-med: #cbd5e1;
-    --text-low: #94a3b8;
-    --cyan: #38bdf8;
-    --cyan-glow: rgba(56, 189, 248, 0.15);
-    --purple: #c084fc;
-    --purple-glow: rgba(192, 132, 252, 0.15);
-    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
-  }
-  @media (prefers-color-scheme: light) {
-    :root {
-      --bg-base: #f8fafc;
-      --bg-card: #ffffff;
-      --bg-subtle: #f1f5f9;
-      --border-subtle: #e2e8f0;
-      --border-hover: #cbd5e1;
-      --text-high: #0f172a;
-      --text-med: #475569;
-      --text-low: #64748b;
-      --cyan: #0284c7;
-      --cyan-glow: rgba(2, 132, 199, 0.1);
-      --purple: #9333ea;
-      --purple-glow: rgba(147, 51, 234, 0.1);
-    }
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClinSight</title>
+    <meta name="description" content="Side-by-side drug class comparisons of clinical trial designs, dosing schedules, DLT windows, eligibility criteria, and primary endpoints.">
+    <link rel="canonical" href="https://clinsight.pract.eu/compare/">
+    <style>
+        :root {
+            --bg-void: #07090e;
+            --bg-base: #0b0f19;
+            --bg-surface: #111827;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-strong: rgba(255, 255, 255, 0.16);
+            --cyan: #38bdf8;
+            --cyan-glow: rgba(56, 189, 248, 0.12);
+            --text-high: #f8fafc;
+            --text-med: #cbd5e1;
+            --text-low: #94a3b8;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            color-scheme: dark;
+        }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: var(--font-sans);
-    background: var(--bg-base);
-    color: var(--text-high);
-    line-height: 1.55;
-    -webkit-font-smoothing: antialiased;
-  }
+        :root[data-theme="light"] {
+            --bg-void: #f8fafc;
+            --bg-base: #ffffff;
+            --bg-surface: #f1f5f9;
+            --border-subtle: #e2e8f0;
+            --border-strong: #cbd5e1;
+            --cyan: #0284c7;
+            --cyan-glow: rgba(2, 132, 199, 0.08);
+            --text-high: #0f172a;
+            --text-med: #334155;
+            --text-low: #64748b;
+            color-scheme: light;
+        }
 
-  .site-nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(11, 15, 25, 0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border-subtle);
-  }
-  @media (prefers-color-scheme: light) { .site-nav { background: rgba(248, 250, 252, 0.88); } }
-  .nav-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 24px;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .nav-brand {
-    display: flex;
-    align-items: baseline;
-    gap: 12px;
-    text-decoration: none;
-    color: inherit;
-  }
-  .logo-text { font-size: 19px; font-weight: 700; color: var(--text-high); }
-  .logo-text span { color: var(--cyan); }
-  .logo-tag { font-size: 12.5px; color: var(--text-med); font-weight: 500; padding-left: 12px; border-left: 1px solid var(--border-subtle); }
-  @media (max-width: 768px) { .logo-tag { display: none; } }
-  .nav-links a {
-    color: var(--text-med);
-    text-decoration: none;
-    font-size: 13.5px;
-    font-weight: 500;
-    padding: 6px 14px;
-    border-radius: 8px;
-    transition: all 0.15s;
-  }
-  .nav-links a:hover { color: var(--text-high); background: var(--bg-subtle); }
-  .nav-links a.active { color: var(--cyan); background: var(--cyan-glow); font-weight: 600; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-void);
+            color: var(--text-high);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-  main {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 48px 24px 80px;
-  }
-  .page-tag {
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--purple);
-    background: var(--purple-glow);
-    border: 1px solid rgba(192, 132, 252, 0.3);
-    padding: 4px 12px;
-    border-radius: 999px;
-    display: inline-block;
-    margin-bottom: 16px;
-  }
-  h1 { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 12px; }
-  .subtitle { font-size: 16px; color: var(--text-med); max-width: 720px; margin-bottom: 36px; }
+        .site-nav {
+            border-bottom: 1px solid var(--border-subtle);
+            background: var(--bg-base);
+            padding: 18px 32px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-inner {
+            max-width: 1040px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-brand {
+            font-size: 19px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--cyan);
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+        .nav-links a {
+            color: var(--text-med);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.15s;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--cyan); }
 
-  .matrix-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 20px;
-  }
-  .matrix-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-subtle);
-    border-radius: 12px;
-    padding: 24px;
-    text-decoration: none;
-    color: inherit;
-    transition: all 0.2s;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  .matrix-card:hover {
-    border-color: var(--border-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 12px 28px rgba(0,0,0,0.25);
-  }
-  .matrix-tag {
-    font-size: 11px;
-    font-family: var(--font-mono);
-    color: var(--cyan);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 8px;
-  }
-  .matrix-title { font-size: 18px; font-weight: 700; color: var(--text-high); margin-bottom: 8px; }
-  .matrix-desc { font-size: 13.5px; color: var(--text-med); line-height: 1.6; margin-bottom: 20px; }
-  .matrix-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 12.5px;
-    color: var(--text-low);
-    padding-top: 14px;
-    border-top: 1px solid var(--border-subtle);
-  }
-  .action-arrow { color: var(--cyan); font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
-</style>
+        .theme-toggle-btn {
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-med);
+            padding: 6px 11px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12.5px;
+            display: inline-flex;
+            align-items: center;
+        }
+        .theme-toggle-btn:hover {
+            color: var(--text-high);
+            border-color: var(--border-strong);
+        }
+
+        main {
+            flex: 1;
+            max-width: 1040px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 72px 32px 96px;
+        }
+
+        .page-head {
+            margin-bottom: 56px;
+        }
+        .page-title {
+            font-size: 38px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+            color: var(--text-high);
+            margin-bottom: 16px;
+        }
+        .page-sub {
+            font-size: 17px;
+            color: var(--text-med);
+            line-height: 1.65;
+            max-width: 720px;
+        }
+
+        .section-title {
+            font-size: 12.5px;
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-low);
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .item-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 64px;
+        }
+        .item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            padding: 24px 0;
+            border-bottom: 1px solid var(--border-subtle);
+            text-decoration: none;
+            color: inherit;
+        }
+        .item-row:hover .item-name {
+            color: var(--cyan);
+        }
+        .item-main {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .item-name {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text-high);
+            transition: color 0.15s;
+        }
+        .item-desc {
+            font-size: 14px;
+            color: var(--text-low);
+            line-height: 1.55;
+        }
+        .item-action {
+            font-size: 13.5px;
+            color: var(--cyan);
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        .site-footer {
+            border-top: 1px solid var(--border-subtle);
+            padding: 28px 32px;
+            font-size: 13px;
+            color: var(--text-low);
+        }
+        .footer-inner {
+            max-width: 1040px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+        .footer-links a {
+            color: var(--text-low);
+            text-decoration: none;
+        }
+        .footer-links a:hover { color: var(--cyan); }
+
+        @media (max-width: 600px) {
+            .site-nav {
+                padding: 12px 16px;
+            }
+            .nav-links {
+                gap: 14px;
+            }
+            .nav-links a {
+                font-size: 13px;
+                white-space: nowrap;
+            }
+            main {
+                padding: 40px 16px 56px;
+            }
+            .page-head {
+                margin-bottom: 40px;
+            }
+            .page-title {
+                font-size: 28px;
+            }
+            .page-sub {
+                font-size: 15px;
+            }
+            .item-row {
+                align-items: baseline;
+                padding: 16px 0;
+                gap: 16px;
+            }
+            .item-name {
+                font-size: 15.5px;
+            }
+            .item-desc {
+                font-size: 13px;
+            }
+            .site-footer {
+                padding: 20px 16px;
+            }
+            .footer-links {
+                gap: 16px;
+            }
+        }
+    </style>
 </head>
 <body>
-
-<nav class="site-nav">
-  <div class="nav-inner">
-    <a href="/" class="nav-brand">
-      <div class="logo-text">ClinSight<span>™</span></div>
-      <div class="logo-tag">Clinical Trials &amp; Evidence Generation</div>
-    </a>
-    <div class="nav-links">
-      <a href="/">Home</a>
-      <a href="/explorer/">Trials Explorer</a>
-      <a href="/compare/" class="active">Comparator</a>
-      <a href="/jobs/">Careers</a>
-    </div>
-  </div>
-</nav>
-
-<main>
-  <div class="page-tag">Clinical Intelligence</div>
-  <h1>Cross-Trial Landscape Matrices</h1>
-  <p class="subtitle">
-    Side-by-side competitive intelligence comparing clinical regimens, target antigens, lines of therapy, and primary endpoints directly from official registry records.
-  </p>
-
-  <div class="matrix-cards">
-    <a href="/compare/myeloma-car-t-bispecific-adc/" class="matrix-card">
-      <div>
-        <div class="matrix-tag">Oncology · Hematology</div>
-        <div class="matrix-title">Multiple Myeloma: CAR-T, Bispecific &amp; ADC Matrix</div>
-        <div class="matrix-desc">
-          Head-to-head comparison of 12 landmark trials evaluating BCMA and GPRC5D therapies across Cilta-cel, Ide-cel, Teclistamab, Elranatamab, Talquetamab, and Belantamab regimens.
+    <nav class="site-nav" aria-label="Primary Navigation">
+        <div class="nav-inner">
+            <a href="/" class="nav-brand">ClinSight</a>
+            <div class="nav-links">
+                <a href="/compare/" class="active">Comparator</a>
+                <a href="/explorer/">Trials explorer</a>
+                <button type="button" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle theme">Theme</button>
+            </div>
         </div>
-      </div>
-      <div class="matrix-footer">
-        <span>12 Landmark Protocols</span>
-        <span class="action-arrow">Launch Matrix &rarr;</span>
-      </div>
-    </a>
+    </nav>
 
-    <a href="/targets/mettl3-inhibitors/" class="matrix-card">
-      <div>
-        <div class="matrix-tag">Oncology · RNA Epigenetics</div>
-        <div class="matrix-title">METTL3 Inhibitors: STC-15 &amp; EP102 Clinical Matrix</div>
-        <div class="matrix-desc">
-          Side-by-side comparison of clinical-stage oral METTL3 RNA methyltransferase inhibitors across STC-15 (NCT05584111, NCT06975293) and EP102 (NCT07163325) regimens, dose-escalation designs, DLT windows, and patient eligibility.
+    <main>
+        <div class="page-head">
+            <h1 class="page-title">Drug class comparisons</h1>
+            <p class="page-sub">Compare trial designs, dosing schedules, DLT windows, eligibility cutoffs, and primary endpoints side by side across every clinical trial in a drug class.</p>
         </div>
-      </div>
-      <div class="matrix-footer">
-        <span>3 Clinical Protocols</span>
-        <span class="action-arrow">Launch Matrix &rarr;</span>
-      </div>
-    </a>
-  </div>
-</main>
 
+        <div class="section-title">Available Comparisons</div>
+        <div class="item-list">
+            <a href="/compare/myeloma-car-t-bispecific-adc/" class="item-row">
+                <div class="item-main">
+                    <span class="item-name">Multiple Myeloma (CAR-T, Bispecific &amp; ADC)</span>
+                    <span class="item-desc">Side-by-side comparison of 12 landmark clinical trials evaluating BCMA and GPRC5D regimens across cilta-cel, ide-cel, teclistamab, elranatamab, talquetamab, and belantamab.</span>
+                </div>
+                <span class="item-action">Open comparison &rarr;</span>
+            </a>
+            <a href="/targets/mettl3-inhibitors/" class="item-row">
+                <div class="item-main">
+                    <span class="item-name">METTL3 Inhibitors (STC-15 vs EP102)</span>
+                    <span class="item-desc">First-in-human and combination dose escalation: 3+3 vs BOIN design, 21-day DLT windows, and organ function cutoffs across all 3 active trials.</span>
+                </div>
+                <span class="item-action">Open comparison &rarr;</span>
+            </a>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div>ClinSight · <a href="https://pract.eu" style="color:inherit; text-decoration:underline;">PRACT</a></div>
+            <div class="footer-links">
+                <a href="/compare/">Comparator</a>
+                <a href="/explorer/">Trials explorer</a>
+                <a href="/jobs/">Careers</a>
+                <a href="/sitemap.xml">Sitemap</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme') || 'dark';
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('clinsight_theme', next);
+        }
+        const saved = localStorage.getItem('clinsight_theme');
+        if (saved) document.documentElement.setAttribute('data-theme', saved);
+    </script>
 </body>
 </html>

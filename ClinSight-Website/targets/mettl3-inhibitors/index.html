@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>METTL3 inhibitors — trial design comparison | ClinSight</title>
+  <title>ClinSight</title>
   <meta name="description" content="Side-by-side protocol comparison of clinical-stage oral METTL3 RNA methyltransferase inhibitors STC-15 (NCT06975293, NCT05584111) and EP102 (NCT07163325): escalation design, cohort schedules, DLT windows, washouts, and eligibility.">
   <link rel="canonical" href="https://clinsight.pract.eu/targets/mettl3-inhibitors/">
   <style>
@@ -26,6 +26,23 @@
       color-scheme: dark;
     }
 
+    :root[data-theme="light"] {
+      --bg-void: #f8fafc;
+      --bg-base: #ffffff;
+      --bg-surface: #f1f5f9;
+      --bg-elevated: #e2e8f0;
+      --border-subtle: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --cyan: #0284c7;
+      --cyan-glow: rgba(2, 132, 199, 0.08);
+      --purple: #7c3aed;
+      --emerald: #059669;
+      --text-high: #0f172a;
+      --text-med: #334155;
+      --text-low: #64748b;
+      color-scheme: light;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background: var(--bg-void);
@@ -39,44 +56,58 @@
     .site-nav {
       border-bottom: 1px solid var(--border-subtle);
       background: var(--bg-base);
-      padding: 12px 24px;
+      padding: 18px 32px;
       position: sticky;
       top: 0;
       z-index: 100;
-      backdrop-filter: blur(12px);
     }
     .nav-inner {
-      max-width: 1220px;
+      max-width: 1040px;
       margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
     }
     .nav-brand {
-      display: flex;
-      align-items: baseline;
-      gap: 10px;
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--cyan);
       text-decoration: none;
-      color: var(--text-high);
     }
-    .logo-text { font-size: 19px; font-weight: 700; color: var(--cyan); }
-    .logo-tag {
-      font-size: 12.5px;
-      color: var(--text-low);
-      border-left: 1px solid var(--border-subtle);
-      padding-left: 10px;
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
     }
-    @media (max-width: 640px) { .logo-tag { display: none; } }
-    .nav-links { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
     .nav-links a {
       color: var(--text-med);
       text-decoration: none;
-      font-size: 13.5px;
+      font-size: 14px;
       font-weight: 500;
+      transition: color 0.15s;
     }
     .nav-links a:hover, .nav-links a.active { color: var(--cyan); }
+    .theme-toggle-btn {
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-med);
+      padding: 6px 11px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12.5px;
+      display: inline-flex;
+      align-items: center;
+    }
+    .theme-toggle-btn:hover {
+      color: var(--text-high);
+      border-color: var(--border-strong);
+    }
+    @media (max-width: 600px) {
+      .site-nav { padding: 12px 16px; }
+      .nav-links { gap: 14px; }
+      .nav-links a { font-size: 13px; white-space: nowrap; }
+    }
 
     .container {
       max-width: 1220px;
@@ -404,15 +435,11 @@
   
   <nav class="site-nav" aria-label="Primary Navigation">
     <div class="nav-inner">
-      <a href="../../" class="nav-brand">
-        <span class="logo-text">ClinSight™</span>
-        <span class="logo-tag">Clinical Trials &amp; Evidence Generation</span>
-      </a>
+      <a href="../../" class="nav-brand">ClinSight</a>
       <div class="nav-links">
-        <a href="../../">Home</a>
-        <a href="../../explorer/" class="">Trials Explorer</a>
         <a href="../../compare/" class="active">Comparator</a>
-        <a href="../../jobs/">Careers</a>
+        <a href="../../explorer/" class="">Trials explorer</a>
+        <button type="button" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle theme">Theme</button>
       </div>
     </div>
   </nav>
@@ -421,12 +448,11 @@
     <div class="page-head">
       <div>
         <div class="eyebrow"><a href="../../compare/">Comparator</a> &middot; RNA Epigenetics</div>
-        <h1>METTL3 inhibitors — trial design comparison</h1>
-        <p class="head-sub">Side-by-side comparison of all three interventional clinical trials of oral METTL3 RNA methyltransferase inhibitors: STORM Therapeutics&#x27; <strong>STC-15</strong> and Epics Therapeutics&#x27; <strong>EP102</strong>. Hover any cell or toggle sources for registry field provenance.</p>
+        <h1>METTL3 inhibitors: trial design comparison</h1>
+        <p class="head-sub">Side-by-side comparison of clinical trials of oral METTL3 RNA methyltransferase inhibitors: STORM Therapeutics&#x27; <strong>STC-15</strong> and Epics Therapeutics&#x27; <strong>EP102</strong>.</p>
       </div>
       <div class="toolbar">
-        <button type="button" class="btn" id="btnSources" onclick="toggleSources()">Show sources</button>
-        <button type="button" class="btn" id="btnCopyMd" onclick="copyTableMarkdown()">Copy table (Markdown)</button>
+        <button type="button" class="btn" id="btnCopyMd" onclick="copyTableMarkdown()">Copy table</button>
         <button type="button" class="btn" onclick="exportTableCsv()">Export CSV</button>
       </div>
     </div>
@@ -472,26 +498,26 @@
         </thead>
         <tbody>
           <tr class="group-row"><td colspan="4">Regimen, Indications &amp; Scope</td></tr>
-<tr><td class="param-col">Investigational Regimen</td><td data-src-path="protocolSection.armsInterventionsModule.interventions" data-src-quote="STC-15 in combination with toripalimab, STC-15 monotherapy" title="Registry field: protocolSection.armsInterventionsModule.interventions — &quot;STC-15 in combination with toripalimab, STC-15 monotherapy&quot;">STC-15 in combination with toripalimab, STC-15 monotherapy</td><td data-src-path="protocolSection.armsInterventionsModule.interventions" data-src-quote="EP102" title="Registry field: protocolSection.armsInterventionsModule.interventions — &quot;EP102&quot;">EP102</td><td data-src-path="protocolSection.armsInterventionsModule.interventions" data-src-quote="STC-15" title="Registry field: protocolSection.armsInterventionsModule.interventions — &quot;STC-15&quot;">STC-15</td></tr>
-<tr><td class="param-col">Registered Conditions</td><td data-src-path="protocolSection.conditionsModule.conditions" data-src-quote="Solid Tumor; Sarcoma; Leiomyosarcoma; Dedifferentiated Liposarcoma" title="Registry field: protocolSection.conditionsModule.conditions — &quot;Solid Tumor; Sarcoma; Leiomyosarcoma; Dedifferentiated Liposarcoma&quot;">Solid Tumor; Sarcoma; Leiomyosarcoma; Dedifferentiated Liposarcoma</td><td data-src-path="protocolSection.conditionsModule.conditions" data-src-quote="Advanced Solid Tumor (Phase 1)" title="Registry field: protocolSection.conditionsModule.conditions — &quot;Advanced Solid Tumor (Phase 1)&quot;">Advanced Solid Tumor (Phase 1)</td><td data-src-path="protocolSection.conditionsModule.conditions" data-src-quote="Advanced Cancer; Advanced Solid Tumor; Cancer" title="Registry field: protocolSection.conditionsModule.conditions — &quot;Advanced Cancer; Advanced Solid Tumor; Cancer&quot;">Advanced Cancer; Advanced Solid Tumor; Cancer</td></tr>
-<tr><td class="param-col">Target Enrollment</td><td data-src-path="protocolSection.designModule.enrollmentInfo" data-src-quote="N = 107 (estimated)" title="Registry field: protocolSection.designModule.enrollmentInfo — &quot;N = 107 (estimated)&quot;">N = 107 (estimated)</td><td data-src-path="protocolSection.designModule.enrollmentInfo" data-src-quote="N = 48 (estimated)" title="Registry field: protocolSection.designModule.enrollmentInfo — &quot;N = 48 (estimated)&quot;">N = 48 (estimated)</td><td data-src-path="protocolSection.designModule.enrollmentInfo" data-src-quote="N = 42 (actual)" title="Registry field: protocolSection.designModule.enrollmentInfo — &quot;N = 42 (actual)&quot;">N = 42 (actual)</td></tr>
+<tr><td class="param-col">Investigational Regimen</td><td>STC-15 in combination with toripalimab, STC-15 monotherapy</td><td>EP102</td><td>STC-15</td></tr>
+<tr><td class="param-col">Registered Conditions</td><td>Solid Tumor; Sarcoma; Leiomyosarcoma; Dedifferentiated Liposarcoma</td><td>Advanced Solid Tumor (Phase 1)</td><td>Advanced Cancer; Advanced Solid Tumor; Cancer</td></tr>
+<tr><td class="param-col">Target Enrollment</td><td>N = 107 (estimated)</td><td>N = 48 (estimated)</td><td>N = 42 (actual)</td></tr>
 <tr class="group-row"><td colspan="4">Escalation &amp; Cohort Design</td></tr>
-<tr><td class="param-col">Escalation &amp; Expansion Design</td><td data-src-path="protocolSection.armsInterventionsModule.armGroups[0].description; protocolSection.descriptionModule.briefSummary" data-src-quote="Phase 1b 3+3 trial design of dose escalation of STC-15 in combination with toripalimab (protocolSection.armsInterventionsModule.armGroups[0].description) · The Phase 2 Monotherapy part is an open-label, non-randomized, multicenter Simon&#x27;s 2-stage design that investigates the safety, tolerability, and antitumor activity of STC-15 in participants with selected, relapsed sarcomas subtypes, dedifferentiated (DD) liposarcoma and leiomyosarcoma (uterine and non-uterine) (protocolSection.descriptionModule.briefSummary)" title="Registry field: protocolSection.armsInterventionsModule.armGroups[0].description; protocolSection.descriptionModule.briefSummary — &quot;Phase 1b 3+3 trial design of dose escalation of STC-15 in combination with toripalimab (protocolSection.armsInterventionsModule.armGroups[0].description) · The Phase 2 Monotherapy part is an open-label, non-randomized, multicenter Simon&#x27;s 2-stage design that investigates the safety, tolerability, and antitumor activity of STC-15 in participants with selected, relapsed sarcomas subtypes, dedifferentiated (DD) liposarcoma and leiomyosarcoma (uterine and non-uterine) (protocolSection.descriptionModule.briefSummary)&quot;"><strong>3+3 + Simon&#x27;s 2-stage</strong></td><td data-src-path="protocolSection.designModule.designInfo.interventionModelDescription" data-src-quote="The study will follow a Bayesian optimal interval (BOIN) design (protocolSection.designModule.designInfo.interventionModelDescription)" title="Registry field: protocolSection.designModule.designInfo.interventionModelDescription — &quot;The study will follow a Bayesian optimal interval (BOIN) design (protocolSection.designModule.designInfo.interventionModelDescription)&quot;"><strong>BOIN</strong></td><td data-src-path="protocolSection.descriptionModule.briefSummary; protocolSection.descriptionModule.briefSummary" data-src-quote="This Phase 1, multi-center, open-label, first-in-human study evaluates multiple ascending daily oral doses of STC-15 in Q3W treatment cycles in a 3+3 cohort design with dose levels determined by a modified Fibonacci algorithm (protocolSection.descriptionModule.briefSummary) · Dose levels for further evaluation in expansion cohorts will be selected based on all available PK, pharmacodynamic, target engagement, efficacy, safety, and tolerability data including long-term safety data beyond dose limiting toxicities (DLTs) (protocolSection.descriptionModule.briefSummary)" title="Registry field: protocolSection.descriptionModule.briefSummary; protocolSection.descriptionModule.briefSummary — &quot;This Phase 1, multi-center, open-label, first-in-human study evaluates multiple ascending daily oral doses of STC-15 in Q3W treatment cycles in a 3+3 cohort design with dose levels determined by a modified Fibonacci algorithm (protocolSection.descriptionModule.briefSummary) · Dose levels for further evaluation in expansion cohorts will be selected based on all available PK, pharmacodynamic, target engagement, efficacy, safety, and tolerability data including long-term safety data beyond dose limiting toxicities (DLTs) (protocolSection.descriptionModule.briefSummary)&quot;"><strong>3+3 + Dose Expansion (modified Fibonacci)</strong></td></tr>
-<tr><td class="param-col">Cohorts &amp; Dosing Arms</td><td data-src-path="protocolSection.armsInterventionsModule.armGroups" data-src-quote="Phase 1 dose escalation: Phase 1b 3+3 trial design of dose escalation of STC-15 in combination with toripalimab; Phase 2 Stage 1 Monotherapy: STC-15 in patients with DD liposarcoma or leiomyosarcoma; Phase 2 Stage 2 Monotherapy: STC-15 in patients with DD liposarcoma or leiomyosarcoma" title="Registry field: protocolSection.armsInterventionsModule.armGroups — &quot;Phase 1 dose escalation: Phase 1b 3+3 trial design of dose escalation of STC-15 in combination with toripalimab; Phase 2 Stage 1 Monotherapy: STC-15 in patients with DD liposarcoma or leiomyosarcoma; Phase 2 Stage 2 Monotherapy: STC-15 in patients with DD liposarcoma or leiomyosarcoma&quot;"><strong>3 cohorts:</strong><ul class="cell-list"><li>Phase 1 dose escalation (3+3 design, STC-15 + toripalimab)</li><li>Phase 2 Stage 1 Monotherapy (liposarcoma / leiomyosarcoma)</li><li>Phase 2 Stage 2 Monotherapy (liposarcoma / leiomyosarcoma)</li></ul></td><td data-src-path="protocolSection.armsInterventionsModule.armGroups" data-src-quote="EP102 Dose level 1; EP102 Dose level 2; EP102 Dose level 3; EP102 Dose level 4; EP102 Dose level 5" title="Registry field: protocolSection.armsInterventionsModule.armGroups — &quot;EP102 Dose level 1; EP102 Dose level 2; EP102 Dose level 3; EP102 Dose level 4; EP102 Dose level 5&quot;"><strong>5 cohorts:</strong><ul class="cell-list"><li>EP102 Dose level 1</li><li>EP102 Dose level 2</li><li>EP102 Dose level 3</li><li>EP102 Dose level 4</li><li>EP102 Dose level 5</li></ul></td><td data-src-path="protocolSection.armsInterventionsModule.armGroups" data-src-quote="Dose Level 1: 30mg capsules, daily administration for 3 week (21 day) cycles; Dose Level 2: 30mg capsules, MWF administration for 3 week (21 day) cycles; Dose Level 3: 100mg capsules, MWF administration for 3 week (21 day) cycles; Dose Level 4: 30mg and 100mg capsules, M-MWF administration for 3 week (21 day) cycles; Dose Level 5: 30mg and 100mg capsules, M-MWF administration for 3 week (21 day) cycles" title="Registry field: protocolSection.armsInterventionsModule.armGroups — &quot;Dose Level 1: 30mg capsules, daily administration for 3 week (21 day) cycles; Dose Level 2: 30mg capsules, MWF administration for 3 week (21 day) cycles; Dose Level 3: 100mg capsules, MWF administration for 3 week (21 day) cycles; Dose Level 4: 30mg and 100mg capsules, M-MWF administration for 3 week (21 day) cycles; Dose Level 5: 30mg and 100mg capsules, M-MWF administration for 3 week (21 day) cycles&quot;"><strong>5 cohorts:</strong><ul class="cell-list"><li>Dose Level 1: 30mg capsules, daily 21-day cycles</li><li>Dose Level 2: 30mg capsules, MWF 21-day cycles</li><li>Dose Level 3: 100mg capsules, MWF 21-day cycles</li><li>Dose Level 4: 30mg and 100mg capsules, M-MWF 21-day cycles</li><li>Dose Level 5: 30mg and 100mg capsules, M-MWF 21-day cycles</li></ul></td></tr>
-<tr><td class="param-col">Allocation &amp; Masking</td><td data-src-path="protocolSection.designModule.designInfo" data-src-quote="Non-randomized · Masking: Open label (none) · Sequential assignment" title="Registry field: protocolSection.designModule.designInfo — &quot;Non-randomized · Masking: Open label (none) · Sequential assignment&quot;">Non-randomized · Masking: Open label (none) · Sequential assignment</td><td data-src-path="protocolSection.designModule.designInfo" data-src-quote="Non-randomized · Masking: Open label (none) · Sequential assignment" title="Registry field: protocolSection.designModule.designInfo — &quot;Non-randomized · Masking: Open label (none) · Sequential assignment&quot;">Non-randomized · Masking: Open label (none) · Sequential assignment</td><td data-src-path="protocolSection.designModule.designInfo" data-src-quote="Non-randomized · Masking: Open label (none) · Sequential assignment" title="Registry field: protocolSection.designModule.designInfo — &quot;Non-randomized · Masking: Open label (none) · Sequential assignment&quot;">Non-randomized · Masking: Open label (none) · Sequential assignment</td></tr>
+<tr><td class="param-col">Escalation &amp; Expansion Design</td><td><strong>3+3 + Simon&#x27;s 2-stage</strong></td><td><strong>BOIN</strong></td><td><strong>3+3 + Dose Expansion (modified Fibonacci)</strong></td></tr>
+<tr><td class="param-col">Cohorts &amp; Dosing Arms</td><td><strong>3 cohorts:</strong><ul class="cell-list"><li>Phase 1 dose escalation (3+3 design, STC-15 + toripalimab)</li><li>Phase 2 Stage 1 Monotherapy (liposarcoma / leiomyosarcoma)</li><li>Phase 2 Stage 2 Monotherapy (liposarcoma / leiomyosarcoma)</li></ul></td><td><strong>5 cohorts:</strong><ul class="cell-list"><li>EP102 Dose level 1</li><li>EP102 Dose level 2</li><li>EP102 Dose level 3</li><li>EP102 Dose level 4</li><li>EP102 Dose level 5</li></ul></td><td><strong>5 cohorts:</strong><ul class="cell-list"><li>Dose Level 1: 30mg capsules, daily 21-day cycles</li><li>Dose Level 2: 30mg capsules, MWF 21-day cycles</li><li>Dose Level 3: 100mg capsules, MWF 21-day cycles</li><li>Dose Level 4: 30mg and 100mg capsules, M-MWF 21-day cycles</li><li>Dose Level 5: 30mg and 100mg capsules, M-MWF 21-day cycles</li></ul></td></tr>
+<tr><td class="param-col">Allocation &amp; Masking</td><td>Non-randomized · Masking: Open label (none) · Sequential assignment</td><td>Non-randomized · Masking: Open label (none) · Sequential assignment</td><td>Non-randomized · Masking: Open label (none) · Sequential assignment</td></tr>
 <tr class="group-row"><td colspan="4">Dose-Finding, DLT &amp; Outcome Measures</td></tr>
-<tr><td class="param-col">Primary Outcome Measures</td><td data-src-path="protocolSection.outcomesModule.primaryOutcomes" data-src-quote="2 primary outcome measures" title="Registry field: protocolSection.outcomesModule.primaryOutcomes — &quot;2 primary outcome measures&quot;"><ul class="cell-list"><li><strong>Combination Safety</strong>: Safety and tolerability of STC-15 + toripalimab (CTCAE v5.0) <span class="cell-note">Timeframe: 6 months</span></li><li><strong>Monotherapy Activity</strong>: Antitumor activity (ORR by RECIST) <span class="cell-note">Timeframe: 6 months</span></li></ul></td><td data-src-path="protocolSection.outcomesModule.primaryOutcomes" data-src-quote="3 primary outcome measures" title="Registry field: protocolSection.outcomesModule.primaryOutcomes — &quot;3 primary outcome measures&quot;"><ul class="cell-list"><li><strong>Safety &amp; Tolerability</strong>: Incidence of ADRs and serious ADRs <span class="cell-note">Timeframe: Up to 21 days</span></li><li><strong>Treatment-Emergent AEs</strong>: Incidence of TEAEs and serious TEAEs <span class="cell-note">Timeframe: Up to 21 days</span></li><li><strong>Dose Exploration</strong>: MTD and recommended dose exploration <span class="cell-note">Timeframe: Up to 21 days</span></li></ul></td><td data-src-path="protocolSection.outcomesModule.primaryOutcomes" data-src-quote="10 primary outcome measures" title="Registry field: protocolSection.outcomesModule.primaryOutcomes — &quot;10 primary outcome measures&quot;"><ul class="cell-list"><li><strong>Safety &amp; Adverse Events</strong>: Incidence and severity of adverse events <span class="cell-note">Timeframe: Screening through ~6 months</span></li><li><strong>Pharmacokinetics (PK profile)</strong>: Cmax, Tmax, Ctrough, t&frac12;, AUC, Clearance, Vss, Accumulation ratio <span class="cell-note">Timeframe: Cycle 2 (21-day cycles)</span></li></ul></td></tr>
-<tr><td class="param-col">DLT Evaluation Window</td><td class="cell-blank">—</td><td data-src-path="protocolSection.outcomesModule.primaryOutcomes[2].description (under measure: &#x27;Explore the maximum tolerated dose (MTD) and recommended doses of EP102 monotherapy for subsequent studie&#x27;) + .timeFrame" data-src-quote="measure: &quot;Explore the maximum tolerated dose (MTD) and recommended doses of EP102 monotherapy for subsequent studie&quot; · description: &quot;Incidence of Dose Limiting Toxicities (DLT)&quot; · timeFrame: &quot;Up to 21 Days after first administration&quot;" title="Registry field: protocolSection.outcomesModule.primaryOutcomes[2].description (under measure: &#x27;Explore the maximum tolerated dose (MTD) and recommended doses of EP102 monotherapy for subsequent studie&#x27;) + .timeFrame — &quot;measure: &quot;Explore the maximum tolerated dose (MTD) and recommended doses of EP102 monotherapy for subsequent studie&quot; · description: &quot;Incidence of Dose Limiting Toxicities (DLT)&quot; · timeFrame: &quot;Up to 21 Days after first administration&quot;&quot;">Up to 21 Days after first administration</td><td class="cell-blank">—</td></tr>
-<tr><td class="param-col">Maximum Tolerated Dose (MTD)</td><td class="cell-blank">—</td><td data-src-path="protocolSection.outcomesModule.primaryOutcomes[2].measure" data-src-quote="Explore the maximum tolerated dose (MTD) and recommended doses of EP102 monotherapy for subsequent studie" title="Registry field: protocolSection.outcomesModule.primaryOutcomes[2].measure — &quot;Explore the maximum tolerated dose (MTD) and recommended doses of EP102 monotherapy for subsequent studie&quot;">Primary outcome</td><td class="cell-blank">—</td></tr>
-<tr><td class="param-col">Recommended Phase 2 Dose (RP2D)</td><td class="cell-blank">—</td><td data-src-path="protocolSection.outcomesModule.primaryOutcomes[2].measure" data-src-quote="Explore the maximum tolerated dose (MTD) and recommended doses of EP102 monotherapy for subsequent studie" title="Registry field: protocolSection.outcomesModule.primaryOutcomes[2].measure — &quot;Explore the maximum tolerated dose (MTD) and recommended doses of EP102 monotherapy for subsequent studie&quot;">MTD &amp; recommended dose for further study</td><td data-src-path="protocolSection.outcomesModule.secondaryOutcomes[4].measure" data-src-quote="Recommended Phase 2 Dose (RP2D)" title="Registry field: protocolSection.outcomesModule.secondaryOutcomes[4].measure — &quot;Recommended Phase 2 Dose (RP2D)&quot;">Secondary outcome</td></tr>
-<tr><td class="param-col">Secondary Outcome Measures</td><td data-src-path="protocolSection.outcomesModule.secondaryOutcomes" data-src-quote="5 secondary outcome measures" title="Registry field: protocolSection.outcomesModule.secondaryOutcomes — &quot;5 secondary outcome measures&quot;"><ul class="cell-list"><li><strong>Anti-tumor Activity</strong>: Combination cohorts efficacy</li><li><strong>Pharmacokinetics (PK)</strong>: Cmax, Tmax, AUC0-t</li><li><strong>Monotherapy Safety</strong>: Safety and tolerability of STC-15</li></ul></td><td data-src-path="protocolSection.outcomesModule.secondaryOutcomes" data-src-quote="6 secondary outcome measures" title="Registry field: protocolSection.outcomesModule.secondaryOutcomes — &quot;6 secondary outcome measures&quot;"><ul class="cell-list"><li><strong>Pharmacokinetics (PK)</strong>: Cmax, AUC, t&frac12;, Cl, Vd profile</li><li><strong>Pharmacodynamics &amp; Activity</strong>: Anti-tumor activity &amp; PD markers</li></ul></td><td data-src-path="protocolSection.outcomesModule.secondaryOutcomes" data-src-quote="5 secondary outcome measures" title="Registry field: protocolSection.outcomesModule.secondaryOutcomes — &quot;5 secondary outcome measures&quot;"><ul class="cell-list"><li><strong>Efficacy Endpoints</strong>: RECIST 1.1 (ORR, DCR, DoR, PFS)</li><li><strong>Dose Finding</strong>: Recommended Phase 2 Dose (RP2D)</li></ul></td></tr>
-<tr><td class="param-col">AE Grading Scale</td><td data-src-path="protocolSection.eligibilityModule.eligibilityCriteria" data-src-quote="* Participants who have not recovered from all AEs due to previous therapies to Grade ≤ 1 or baseline, according to NCI-CTCAE v5" title="Registry field: protocolSection.eligibilityModule.eligibilityCriteria — &quot;* Participants who have not recovered from all AEs due to previous therapies to Grade ≤ 1 or baseline, according to NCI-CTCAE v5&quot;">CTCAE (v5.0)</td><td class="cell-blank">—</td><td class="cell-blank">—</td></tr>
+<tr><td class="param-col">Primary Outcome Measures</td><td><ul class="cell-list"><li><strong>Combination Safety</strong>: Safety and tolerability of STC-15 + toripalimab (CTCAE v5.0) <span class="cell-note">Timeframe: 6 months</span></li><li><strong>Monotherapy Activity</strong>: Antitumor activity (ORR by RECIST) <span class="cell-note">Timeframe: 6 months</span></li></ul></td><td><ul class="cell-list"><li><strong>Safety &amp; Tolerability</strong>: Incidence of ADRs and serious ADRs <span class="cell-note">Timeframe: Up to 21 days</span></li><li><strong>Treatment-Emergent AEs</strong>: Incidence of TEAEs and serious TEAEs <span class="cell-note">Timeframe: Up to 21 days</span></li><li><strong>Dose Exploration</strong>: MTD and recommended dose exploration <span class="cell-note">Timeframe: Up to 21 days</span></li></ul></td><td><ul class="cell-list"><li><strong>Safety &amp; Adverse Events</strong>: Incidence and severity of adverse events <span class="cell-note">Timeframe: Screening through ~6 months</span></li><li><strong>Pharmacokinetics (PK profile)</strong>: Cmax, Tmax, Ctrough, t&frac12;, AUC, Clearance, Vss, Accumulation ratio <span class="cell-note">Timeframe: Cycle 2 (21-day cycles)</span></li></ul></td></tr>
+<tr><td class="param-col">DLT Evaluation Window</td><td class="cell-blank">Not specified</td><td>Up to 21 Days after first administration</td><td class="cell-blank">Not specified</td></tr>
+<tr><td class="param-col">Maximum Tolerated Dose (MTD)</td><td class="cell-blank">Not specified</td><td>Primary outcome</td><td class="cell-blank">Not specified</td></tr>
+<tr><td class="param-col">Recommended Phase 2 Dose (RP2D)</td><td class="cell-blank">Not specified</td><td>MTD &amp; recommended dose for further study</td><td>Secondary outcome</td></tr>
+<tr><td class="param-col">Secondary Outcome Measures</td><td><ul class="cell-list"><li><strong>Anti-tumor Activity</strong>: Combination cohorts efficacy</li><li><strong>Pharmacokinetics (PK)</strong>: Cmax, Tmax, AUC0-t</li><li><strong>Monotherapy Safety</strong>: Safety and tolerability of STC-15</li></ul></td><td><ul class="cell-list"><li><strong>Pharmacokinetics (PK)</strong>: Cmax, AUC, t&frac12;, Cl, Vd profile</li><li><strong>Pharmacodynamics &amp; Activity</strong>: Anti-tumor activity &amp; PD markers</li></ul></td><td><ul class="cell-list"><li><strong>Efficacy Endpoints</strong>: RECIST 1.1 (ORR, DCR, DoR, PFS)</li><li><strong>Dose Finding</strong>: Recommended Phase 2 Dose (RP2D)</li></ul></td></tr>
+<tr><td class="param-col">AE Grading Scale</td><td>CTCAE (v5.0)</td><td class="cell-blank">Not specified</td><td class="cell-blank">Not specified</td></tr>
 <tr class="group-row"><td colspan="4">Patient Eligibility &amp; Washout Criteria</td></tr>
-<tr><td class="param-col">Prior Therapy Washout</td><td data-src-path="protocolSection.eligibilityModule.eligibilityCriteria" data-src-quote="Received prior systemic anticancer therapy including investigational agents within 4 weeks or 5 half-lives, whichever is shorter, prior to first IMP administration. ; Participants who have not recovered from all AEs due to previous therapies to Grade ≤ 1 or baseline, according to NCI-CTCAE v5.0. Exceptions include: alopecia, Grade ≤ 2 neuropathy, and endocrine-related AEs Grade ≤ 2 who are stable on treatment or hormone replacement." title="Registry field: protocolSection.eligibilityModule.eligibilityCriteria — &quot;Received prior systemic anticancer therapy including investigational agents within 4 weeks or 5 half-lives, whichever is shorter, prior to first IMP administration. ; Participants who have not recovered from all AEs due to previous therapies to Grade ≤ 1 or baseline, according to NCI-CTCAE v5.0. Exceptions include: alopecia, Grade ≤ 2 neuropathy, and endocrine-related AEs Grade ≤ 2 who are stable on treatment or hormone replacement.&quot;">Received prior systemic anticancer therapy including investigational agents within 4 weeks or 5 half-lives, whichever is shorter, prior to first IMP administration. ; Participants who have not recovered from all AEs due to previous therapies to Grade ≤ 1 or baseline, according to NCI-CTCAE v5.0. Exceptions include: alopecia, Grade ≤ 2 neuropathy, and endocrine-related AEs Grade ≤ 2 who are stable on treatment or hormone replacement.</td><td data-src-path="protocolSection.eligibilityModule.eligibilityCriteria" data-src-quote="Participants who have received IMP or devices in other clinical trials within four weeks before the first dose." title="Registry field: protocolSection.eligibilityModule.eligibilityCriteria — &quot;Participants who have received IMP or devices in other clinical trials within four weeks before the first dose.&quot;">Participants who have received IMP or devices in other clinical trials within four weeks before the first dose.</td><td data-src-path="protocolSection.eligibilityModule.eligibilityCriteria" data-src-quote="Treatment with any local or systemic antineoplastic therapy within 3 weeks prior to first dose of STC-15" title="Registry field: protocolSection.eligibilityModule.eligibilityCriteria — &quot;Treatment with any local or systemic antineoplastic therapy within 3 weeks prior to first dose of STC-15&quot;">Treatment with any local or systemic antineoplastic therapy within 3 weeks prior to first dose of STC-15</td></tr>
-<tr><td class="param-col">Organ Function Criteria</td><td class="cell-blank" data-src-path="protocolSection.eligibilityModule.eligibilityCriteria" data-src-quote="— (numeric lab cutoffs not disclosed in registry)" title="Registry field: protocolSection.eligibilityModule.eligibilityCriteria — &quot;— (numeric lab cutoffs not disclosed in registry)&quot;">— (numeric lab cutoffs not disclosed in registry)</td><td class="cell-blank" data-src-path="protocolSection.eligibilityModule.eligibilityCriteria" data-src-quote="— (numeric lab cutoffs not disclosed in registry)" title="Registry field: protocolSection.eligibilityModule.eligibilityCriteria — &quot;— (numeric lab cutoffs not disclosed in registry)&quot;">— (numeric lab cutoffs not disclosed in registry)</td><td data-src-path="protocolSection.eligibilityModule.eligibilityCriteria" data-src-quote="Hematologic: Adequate organ and marrow function" title="Registry field: protocolSection.eligibilityModule.eligibilityCriteria — &quot;Hematologic: Adequate organ and marrow function&quot;">Hematologic: Adequate organ and marrow function</td></tr>
+<tr><td class="param-col">Prior Therapy Washout</td><td>Received prior systemic anticancer therapy including investigational agents within 4 weeks or 5 half-lives, whichever is shorter, prior to first IMP administration. ; Participants who have not recovered from all AEs due to previous therapies to Grade ≤ 1 or baseline, according to NCI-CTCAE v5.0. Exceptions include: alopecia, Grade ≤ 2 neuropathy, and endocrine-related AEs Grade ≤ 2 who are stable on treatment or hormone replacement.</td><td>Participants who have received IMP or devices in other clinical trials within four weeks before the first dose.</td><td>Treatment with any local or systemic antineoplastic therapy within 3 weeks prior to first dose of STC-15</td></tr>
+<tr><td class="param-col">Organ Function Criteria</td><td class="cell-blank">Not specified</td><td class="cell-blank">Not specified</td><td>Hematologic: Adequate organ and marrow function</td></tr>
 <tr class="group-row"><td colspan="4">Geographic Footprint &amp; Literature</td></tr>
-<tr><td class="param-col">Trial Sites &amp; Countries</td><td data-src-path="protocolSection.contactsLocationsModule.locations" data-src-quote="14 sites in 1 country (United States)" title="Registry field: protocolSection.contactsLocationsModule.locations — &quot;14 sites in 1 country (United States)&quot;"><strong>14 sites in 1 country (United States)</strong></td><td data-src-path="protocolSection.contactsLocationsModule.locations" data-src-quote="11 sites in 4 countries (Belgium, Czechia, Netherlands, Spain)" title="Registry field: protocolSection.contactsLocationsModule.locations — &quot;11 sites in 4 countries (Belgium, Czechia, Netherlands, Spain)&quot;"><strong>11 sites in 4 countries (Belgium, Czechia, Netherlands, Spain)</strong></td><td data-src-path="protocolSection.contactsLocationsModule.locations" data-src-quote="3 sites in 1 country (United States)" title="Registry field: protocolSection.contactsLocationsModule.locations — &quot;3 sites in 1 country (United States)&quot;"><strong>3 sites in 1 country (United States)</strong></td></tr>
-<tr><td class="param-col">Linked PubMed Literature</td><td class="cell-blank" data-src-path="protocolSection.referencesModule.references" data-src-quote="None linked in registry record" title="Registry field: protocolSection.referencesModule.references — &quot;None linked in registry record&quot;">—</td><td class="cell-blank" data-src-path="protocolSection.referencesModule.references" data-src-quote="None linked in registry record" title="Registry field: protocolSection.referencesModule.references — &quot;None linked in registry record&quot;">—</td><td class="cell-blank" data-src-path="protocolSection.referencesModule.references" data-src-quote="None linked in registry record" title="Registry field: protocolSection.referencesModule.references — &quot;None linked in registry record&quot;">—</td></tr>
+<tr><td class="param-col">Trial Sites &amp; Countries</td><td><strong>14 sites in 1 country (United States)</strong></td><td><strong>11 sites in 4 countries (Belgium, Czechia, Netherlands, Spain)</strong></td><td><strong>3 sites in 1 country (United States)</strong></td></tr>
+<tr><td class="param-col">Linked PubMed Literature</td><td class="cell-blank">None</td><td class="cell-blank">None</td><td class="cell-blank">None</td></tr>
 
         </tbody>
       </table>
@@ -521,7 +547,7 @@
             </div>
             <h2>STC-15 as a Part of Combination Therapy With Toripalimab in Selected Advanced Cancers and as Monotherapy in Participants With Selected Sarcomas</h2>
             <div class="syn-meta">STORM Therapeutics LTD &middot; N = 107 (estimated) &middot; 14 sites in 1 country (United States)</div>
-            <p class="syn-body">NCT06975293 (STORM Therapeutics LTD) is a recruiting Phase 1/2 trial (N = 107 (estimated)) evaluating STC-15 in combination with toripalimab, STC-15 monotherapy in Solid Tumor; Sarcoma; Leiomyosarcoma; Dedifferentiated Liposarcoma. The study comprises 3 designated cohorts/arms using a 3+3 + Simon&#x27;s 2-stage design across 14 sites in 1 country (United States). A separate DLT evaluation window is not specified in the registry outcome measures. Primary outcomes evaluate: Combination Cohorts: Safety and tolerability of STC-15 in combination with toripalimab (6 months); Phase 2 Monotherapy Cohorts: Antitumor activity of STC-15 monotherapy (6 months).</p>
+            <p class="syn-body">NCT06975293 (STORM Therapeutics LTD) is a recruiting Phase 1/2 trial (N = 107 (estimated)) evaluating STC-15 in combination with toripalimab, STC-15 monotherapy in Solid Tumor; Sarcoma; Leiomyosarcoma; Dedifferentiated Liposarcoma. The study comprises 3 designated cohorts/arms using a 3+3 + Simon&#x27;s 2-stage design across 14 sites in 1 country (United States). A separate DLT evaluation window is not specified in the outcome measures. Primary outcomes evaluate: Combination Cohorts: Safety and tolerability of STC-15 in combination with toripalimab (6 months); Phase 2 Monotherapy Cohorts: Antitumor activity of STC-15 monotherapy (6 months).</p>
           </div>
           <div class="syn-foot">
             <a href="https://clinicaltrials.gov/study/NCT06975293" target="_blank" rel="noopener noreferrer" class="doc-link">ClinicalTrials.gov &nearr;</a>
@@ -557,7 +583,7 @@
             </div>
             <h2>Oral Administration of STC-15 in Subjects With Advanced Malignancies</h2>
             <div class="syn-meta">STORM Therapeutics LTD &middot; N = 42 (actual) &middot; 3 sites in 1 country (United States)</div>
-            <p class="syn-body">NCT05584111 (STORM Therapeutics LTD) is a completed Phase 1 trial (N = 42 (actual)) evaluating STC-15 in Advanced Cancer; Advanced Solid Tumor; Cancer. The study comprises 5 designated cohorts/arms using a 3+3 + Dose Expansion (modified Fibonacci) design across 3 sites in 1 country (United States). A separate DLT evaluation window is not specified in the registry outcome measures. Primary outcomes evaluate: Number of participants with adverse events (Screening through end of treatment, approximately 6 months); Cmax (PK) (Screening through Cycle 2 (each cycle is 21 days)); Tmax (PK) (Screening through Cycle 2 (each cycle is 21 days)); plus 7 additional PK/safety measures.</p>
+            <p class="syn-body">NCT05584111 (STORM Therapeutics LTD) is a completed Phase 1 trial (N = 42 (actual)) evaluating STC-15 in Advanced Cancer; Advanced Solid Tumor; Cancer. The study comprises 5 designated cohorts/arms using a 3+3 + Dose Expansion (modified Fibonacci) design across 3 sites in 1 country (United States). A separate DLT evaluation window is not specified in the outcome measures. Primary outcomes evaluate: Number of participants with adverse events (Screening through end of treatment, approximately 6 months); Cmax (PK) (Screening through Cycle 2 (each cycle is 21 days)); Tmax (PK) (Screening through Cycle 2 (each cycle is 21 days)); plus 7 additional PK/safety measures.</p>
           </div>
           <div class="syn-foot">
             <a href="https://clinicaltrials.gov/study/NCT05584111" target="_blank" rel="noopener noreferrer" class="doc-link">ClinicalTrials.gov &nearr;</a>
@@ -566,15 +592,11 @@
         </div>
     </div>
 
-    <div class="footnote">
-      <strong>Scope note:</strong> A fourth ClinicalTrials.gov record mentioning METTL3 (<code>NCT06762925</code>, Xijing Hospital) is a non-interventional observational tissue biomarker study with no drug regimen and is excluded from this drug comparison.
-    </div>
-
     <footer>
-      <div><strong>ClinSight™</strong> · Primary Registry Fact Base &middot; <a href="https://pract.eu" style="color:inherit; text-decoration:underline;">PRACT</a></div>
+      <div><strong>ClinSight</strong> &middot; <a href="https://pract.eu" style="color:inherit; text-decoration:underline;">PRACT</a></div>
       <div>
-        <a href="../../explorer/">Explorer</a> &middot;
         <a href="../../compare/">Comparator</a> &middot;
+        <a href="../../explorer/">Trials explorer</a> &middot;
         <a href="../../jobs/">Careers</a> &middot;
         <a href="../../sitemap.xml">Sitemap</a>
       </div>
@@ -582,39 +604,6 @@
   </main>
 
   <script>
-    let sourcesOn = false;
-    function toggleSources() {
-      sourcesOn = !sourcesOn;
-      const btn = document.getElementById('btnSources');
-      btn.classList.toggle('active', sourcesOn);
-      btn.textContent = sourcesOn ? 'Hide sources' : 'Show sources';
-
-      const cells = document.querySelectorAll('#mettl3ComparisonTable td[data-src-path]');
-      cells.forEach(td => {
-        const existing = td.querySelector('.src-drawer');
-        if (existing) existing.remove();
-        if (sourcesOn) {
-          const path = td.getAttribute('data-src-path') || '';
-          const quote = td.getAttribute('data-src-quote') || '';
-          const div = document.createElement('div');
-          div.className = 'src-drawer';
-          if (path) {
-            const sPath = document.createElement('span');
-            sPath.className = 'src-path';
-            sPath.textContent = path;
-            div.appendChild(sPath);
-          }
-          if (quote) {
-            const sQuote = document.createElement('span');
-            sQuote.className = 'src-quote';
-            sQuote.textContent = '"' + quote + '"';
-            div.appendChild(sQuote);
-          }
-          td.appendChild(div);
-        }
-      });
-    }
-
     function copyClassSynopsis() {
       const text = document.getElementById('classSynopsisText').innerText;
       navigator.clipboard.writeText(text).then(() => {
@@ -633,8 +622,6 @@
         if (tr.classList.contains('group-row')) continue;
         const cells = Array.from(tr.querySelectorAll('td')).map(td => {
           const clone = td.cloneNode(true);
-          const drawer = clone.querySelector('.src-drawer');
-          if (drawer) drawer.remove();
           return clone.innerText.replace(/\s+/g, ' ').trim();
         });
         rows.push(cells);
@@ -655,7 +642,7 @@
       navigator.clipboard.writeText(lines.join('\n')).then(() => {
         const btn = document.getElementById('btnCopyMd');
         btn.textContent = 'Copied!';
-        setTimeout(() => { btn.textContent = 'Copy table (Markdown)'; }, 2000);
+        setTimeout(() => { btn.textContent = 'Copy table'; }, 2000);
       });
     }
 
@@ -672,6 +659,15 @@
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('clinsight_theme', next);
+    }
+    const savedTheme = localStorage.getItem('clinsight_theme');
+    if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
   </script>
 </body>
 </html>

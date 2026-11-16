@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clinical Trials & Research Careers | ClinSight</title>
-    <meta name="description" content="Verified, direct Nordic clinical trial and research positions across Sweden and Denmark. Decoded functions, verbatim requirements, and direct hospital & sponsor ATS links.">
+    <title>ClinSight</title>
+    <meta name="description" content="Nordic clinical trial and life science research positions across Sweden and Denmark.">
     <link rel="canonical" href="https://clinsight.pract.eu/jobs/">
     <style>
         :root {
@@ -548,41 +548,30 @@
     <nav class="site-nav">
         <div class="nav-inner">
             <a href="/" class="nav-brand">
-                <div class="logo-text">ClinSight<span>™</span></div>
-                <div class="logo-tag">Clinical Trials &amp; Evidence Generation</div>
+                <div class="logo-text">ClinSight</div>
             </a>
             <div class="nav-links">
-                <a href="/">Home</a>
-                <a href="/explorer/">Trials Explorer</a>
                 <a href="/compare/">Comparator</a>
-                <a href="/jobs/" class="active">Careers</a>
-                <button type="button" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle theme">
-                    <i class="fa-solid fa-circle-half-stroke"></i>
-                </button>
+                <a href="/explorer/">Trials explorer</a>
+                <button type="button" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle theme">Theme</button>
             </div>
         </div>
     </nav>
 
     <div class="page-wrap">
         <div class="hero-banner">
-            <div class="hero-badge-row">
-                <div class="hero-badge"><i class="fa-solid fa-hospital-user"></i> Nordic Clinical Intelligence</div>
-                <div class="verified-badge"><i class="fa-solid fa-circle-check"></i> Direct ATS Verified · Zero Aggregators · Daily HTTP Audited</div>
-            </div>
             <h1 class="hero-title">Nordic Clinical Research Careers</h1>
             <p class="hero-desc">
-                Verified clinical research positions across Sweden and Denmark. We decode the hidden taxonomy—translating job titles into actual day-to-day functions, isolating verbatim mandatory vs. desirable requirements, and classifying language barriers before you apply.
+                Clinical research and life science positions across Sweden and Denmark, organized by role function, location, seniority, and language requirements.
             </p>
         </div>
 
-        <!-- §8 The Dogfood Radar Box -->
         <div class="radar-box">
             <div class="radar-text">
-                <i class="fa-solid fa-crosshairs" style="color:var(--cyan); margin-right:6px;"></i>
-                <strong>Transition Radar:</strong> Looking for English-working roles in <strong>Pharmacovigilance (PV)</strong>, <strong>Regulatory Affairs (RA)</strong>, or <strong>Clinical Operations</strong>?
+                <strong>English-Working Roles:</strong> Filter for positions in <strong>Pharmacovigilance (PV)</strong>, <strong>Regulatory Affairs (RA)</strong>, or <strong>Clinical Operations</strong> that do not require Scandinavian language fluency.
             </div>
             <button type="button" class="radar-btn" onclick="activateTransitionRadar()">
-                <i class="fa-solid fa-bolt"></i> Load Transition Radar Roles
+                Show English-OK Roles
             </button>
         </div>
 
@@ -611,7 +600,6 @@
                 </select>
             </div>
 
-            <!-- Function Taxonomy Chips (§3) -->
             <div class="filter-chips-row">
                 <span class="chip-label">Function:</span>
                 <span class="chip active" onclick="setFunctionFilter('all', this)">All Functions</span>
@@ -624,17 +612,10 @@
         </div>
 
         <div class="results-bar">
-            <span id="resultsCount">Loading verified clinical research postings...</span>
-            <span style="font-family:var(--font-mono); font-size:11.5px;"><i class="fa-solid fa-shield-halved" style="color:var(--emerald);"></i> Primary-Source Fact Standard</span>
+            <span id="resultsCount">Loading clinical research positions...</span>
         </div>
 
         <div class="jobs-list" id="jobsContainer">
-            <!-- Dynamic Job Cards Rendered from data/clinical_jobs.json -->
-        </div>
-
-        <!-- Editorial Transparency Disclaimer -->
-        <div class="job-board-disclaimer">
-            <strong>The ClinSight Verification Protocol:</strong> All job postings are audited directly from employer Applicant Tracking Systems (Varbi, Region H, Workday, Teamtailor). Mandatory (Krav) and Desirable (Meriterande) criteria are transcribed verbatim without silent modification. Function decodes and analytical notes are clearly labelled interpretations to assist transitioning life scientists. ClinSight does not host employer postings or collect applicant data; all application links route directly to official employer portals.
         </div>
     </div>
 
@@ -649,7 +630,7 @@
                 applyJobFilters();
             } catch (err) {
                 console.error("Failed to load jobs data:", err);
-                document.getElementById('jobsContainer').innerHTML = `<p style="padding:20px; color:var(--rose);">Failed to load verified career listings: ${err.message}</p>`;
+                document.getElementById('jobsContainer').innerHTML = `<p style="padding:20px; color:var(--rose);">Failed to load career listings: ${err.message}</p>`;
             }
         }
 
@@ -701,14 +682,13 @@
 
         function renderJobs(jobs) {
             const countEl = document.getElementById('resultsCount');
-            countEl.innerHTML = `Showing <strong>${jobs.length}</strong> verified position${jobs.length === 1 ? '' : 's'}`;
+            countEl.innerHTML = `Showing <strong>${jobs.length}</strong> position${jobs.length === 1 ? '' : 's'}`;
 
             const container = document.getElementById('jobsContainer');
             if (jobs.length === 0) {
                 container.innerHTML = `
                     <div style="text-align:center; padding:48px 20px; background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:12px; color:var(--text-low);">
-                        <i class="fa-solid fa-filter" style="font-size:24px; margin-bottom:12px; display:block;"></i>
-                        No roles match your exact filter combination. Try selecting "All Locations" or resetting the search input.
+                        No roles match your filter combination. Try selecting "All Locations" or resetting the search input.
                     </div>
                 `;
                 return;
@@ -717,8 +697,8 @@
             container.innerHTML = jobs.map(job => {
                 const isEnglish = (job.language_requirement === 'english_ok');
                 const langBadge = isEnglish ? 
-                    `<span class="badge-lang badge-lang-english"><i class="fa-solid fa-earth-europe"></i> English Working Environment</span>` :
-                    `<span class="badge-lang badge-lang-scandi"><i class="fa-solid fa-language"></i> Scandinavian License / Svenska Required</span>`;
+                    `<span class="badge-lang badge-lang-english">English Working Environment</span>` :
+                    `<span class="badge-lang badge-lang-scandi">Scandinavian Language Required</span>`;
 
                 const deadlineText = job.deadline ? `Deadline: ${job.deadline}` : 'Rolling Review';
 
@@ -727,7 +707,7 @@
 
                 const linkedTrialPill = (job.linked_trials && job.linked_trials.length > 0) ?
                     `<a href="/trials/${job.linked_trials[0]}/" target="_blank" class="trial-pill">
-                        <i class="fa-solid fa-dna"></i> Linked Protocol Fact Base: <strong>${job.linked_trials[0]}</strong> &rarr;
+                        Related clinical trial: <strong>${job.linked_trials[0]}</strong> &rarr;
                     </a>` : '';
 
                 return `
@@ -742,43 +722,37 @@
                         </div>
                     </div>
 
-                    <!-- Function Decode Row (§3) -->
                     <div class="function-decode-row">
-                        <i class="fa-solid fa-compass"></i>
-                        <span><strong>Function Decoded:</strong> ${job.function_label}</span>
+                        <span><strong>Role focus:</strong> ${job.function_label}</span>
                     </div>
 
                     <div class="job-meta-row">
-                        <span><i class="fa-solid fa-building"></i> <strong>${job.employer}</strong></span>
-                        <span><i class="fa-solid fa-location-dot"></i> ${job.location}</span>
-                        <span><i class="fa-solid fa-id-card"></i> ATS: ${job.ats_platform}</span>
-                        <span><i class="fa-regular fa-clock"></i> ${deadlineText}</span>
+                        <span><strong>${job.employer}</strong></span>
+                        <span>${job.location}</span>
+                        <span>${deadlineText}</span>
                     </div>
 
-                    <!-- Krav vs Meriterande (§4 Verbatim) -->
                     <div class="req-grid">
                         <div class="req-col-mandatory">
-                            <div class="req-col-title"><i class="fa-solid fa-circle-check"></i> Mandatory (Krav) — Verbatim</div>
+                            <div class="req-col-title">Requirements (Krav)</div>
                             <ul class="req-list">${mandList}</ul>
                         </div>
                         <div class="req-col-desirable">
-                            <div class="req-col-title"><i class="fa-solid fa-star"></i> Desirable (Meriterande) — Verbatim</div>
-                            <ul class="req-list">${desList || '<li>Inga specifika meriter angivna utöver grundkrav</li>'}</ul>
+                            <div class="req-col-title">Preferred (Meriterande)</div>
+                            <ul class="req-list">${desList || '<li>No additional preferences listed</li>'}</ul>
                         </div>
                     </div>
 
-                    <!-- ClinSight Labelled Note -->
                     <div class="clinsight-note-box">
-                        <i class="fa-solid fa-lightbulb" style="color:var(--cyan); margin-right:4px;"></i>
-                        <strong>ClinSight Read:</strong> ${job.clinsight_note}
+                        <strong>Summary:</strong> ${job.clinsight_note}
                     </div>
 
                     ${linkedTrialPill}
 
                     <div class="job-card-footer">
-                        <span>Verified Active on ${job.ats_platform} · Direct Employer Portal</span>
+                        <span>${job.employer}</span>
                         <a href="${job.apply_url}" target="_blank" rel="noopener noreferrer" class="apply-btn">
-                            Apply via ${job.ats_platform} <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            Apply on employer site &nearr;
                         </a>
                     </div>
                 </article>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NCT05584111 (Phase 1) — Oral Administration of STC-15 in Subjects With Advanced Malignancies | ClinSight</title>
+  <title>ClinSight</title>
   <meta name="description" content="NCT05584111: Oral Administration of STC-15 in Subjects With Advanced Malignancies. Clinical synopsis, cohort schedules, primary outcomes, and eligibility criteria.">
   <link rel="canonical" href="https://clinsight.pract.eu/trials/NCT05584111/">
   <style>
@@ -26,6 +26,23 @@
       color-scheme: dark;
     }
 
+    :root[data-theme="light"] {
+      --bg-void: #f8fafc;
+      --bg-base: #ffffff;
+      --bg-surface: #f1f5f9;
+      --bg-elevated: #e2e8f0;
+      --border-subtle: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --cyan: #0284c7;
+      --cyan-glow: rgba(2, 132, 199, 0.08);
+      --purple: #7c3aed;
+      --emerald: #059669;
+      --text-high: #0f172a;
+      --text-med: #334155;
+      --text-low: #64748b;
+      color-scheme: light;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background: var(--bg-void);
@@ -39,44 +56,58 @@
     .site-nav {
       border-bottom: 1px solid var(--border-subtle);
       background: var(--bg-base);
-      padding: 12px 24px;
+      padding: 18px 32px;
       position: sticky;
       top: 0;
       z-index: 100;
-      backdrop-filter: blur(12px);
     }
     .nav-inner {
-      max-width: 1220px;
+      max-width: 1040px;
       margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
     }
     .nav-brand {
-      display: flex;
-      align-items: baseline;
-      gap: 10px;
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--cyan);
       text-decoration: none;
-      color: var(--text-high);
     }
-    .logo-text { font-size: 19px; font-weight: 700; color: var(--cyan); }
-    .logo-tag {
-      font-size: 12.5px;
-      color: var(--text-low);
-      border-left: 1px solid var(--border-subtle);
-      padding-left: 10px;
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
     }
-    @media (max-width: 640px) { .logo-tag { display: none; } }
-    .nav-links { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
     .nav-links a {
       color: var(--text-med);
       text-decoration: none;
-      font-size: 13.5px;
+      font-size: 14px;
       font-weight: 500;
+      transition: color 0.15s;
     }
     .nav-links a:hover, .nav-links a.active { color: var(--cyan); }
+    .theme-toggle-btn {
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-med);
+      padding: 6px 11px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12.5px;
+      display: inline-flex;
+      align-items: center;
+    }
+    .theme-toggle-btn:hover {
+      color: var(--text-high);
+      border-color: var(--border-strong);
+    }
+    @media (max-width: 600px) {
+      .site-nav { padding: 12px 16px; }
+      .nav-links { gap: 14px; }
+      .nav-links a { font-size: 13px; white-space: nowrap; }
+    }
 
     .container {
       max-width: 1220px;
@@ -404,15 +435,11 @@
   
   <nav class="site-nav" aria-label="Primary Navigation">
     <div class="nav-inner">
-      <a href="../../" class="nav-brand">
-        <span class="logo-text">ClinSight™</span>
-        <span class="logo-tag">Clinical Trials &amp; Evidence Generation</span>
-      </a>
+      <a href="../../" class="nav-brand">ClinSight</a>
       <div class="nav-links">
-        <a href="../../">Home</a>
-        <a href="../../explorer/" class="active">Trials Explorer</a>
         <a href="../../compare/" class="">Comparator</a>
-        <a href="../../jobs/">Careers</a>
+        <a href="../../explorer/" class="active">Trials explorer</a>
+        <button type="button" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle theme">Theme</button>
       </div>
     </div>
   </nav>
@@ -421,7 +448,7 @@
     <div class="page-head">
       <div>
         <div class="eyebrow">
-          <a href="../../targets/mettl3-inhibitors/">&larr; Back to METTL3 Inhibitor Comparison Table</a>
+          <a href="../../targets/mettl3-inhibitors/">&larr; Back to METTL3 comparison</a>
         </div>
         <div class="th-badges" style="margin: 6px 0 8px;">
           <span class="pill pill-phase">NCT05584111</span>
@@ -442,7 +469,7 @@
         <span class="eyebrow" style="margin:0;">Trial Synopsis</span>
         <button type="button" class="btn" id="btnCopySyn" onclick="copySyn()" style="padding:3px 10px; font-size:11.5px;">Copy synopsis</button>
       </div>
-      <p id="synText" style="font-size:14px; color:var(--text-high); line-height:1.65;">NCT05584111 (STORM Therapeutics LTD) is a completed Phase 1 trial (N = 42 (actual)) evaluating STC-15 in Advanced Cancer; Advanced Solid Tumor; Cancer. The study comprises 5 designated cohorts/arms using a 3+3 + Dose Expansion (modified Fibonacci) design across 3 sites in 1 country (United States). A separate DLT evaluation window is not specified in the registry outcome measures. Primary outcomes evaluate: Number of participants with adverse events (Screening through end of treatment, approximately 6 months); Cmax (PK) (Screening through Cycle 2 (each cycle is 21 days)); Tmax (PK) (Screening through Cycle 2 (each cycle is 21 days)); plus 7 additional PK/safety measures.</p>
+      <p id="synText" style="font-size:14px; color:var(--text-high); line-height:1.65;">NCT05584111 (STORM Therapeutics LTD) is a completed Phase 1 trial (N = 42 (actual)) evaluating STC-15 in Advanced Cancer; Advanced Solid Tumor; Cancer. The study comprises 5 designated cohorts/arms using a 3+3 + Dose Expansion (modified Fibonacci) design across 3 sites in 1 country (United States). A separate DLT evaluation window is not specified in the outcome measures. Primary outcomes evaluate: Number of participants with adverse events (Screening through end of treatment, approximately 6 months); Cmax (PK) (Screening through Cycle 2 (each cycle is 21 days)); Tmax (PK) (Screening through Cycle 2 (each cycle is 21 days)); plus 7 additional PK/safety measures.</p>
     </div>
 
     <div class="kv-card">
@@ -461,11 +488,11 @@
       </div>
       <div class="kv-row">
         <div class="kv-key">DLT Evaluation Window</div>
-        <div class="kv-val">—</div>
+        <div class="kv-val">Not specified</div>
       </div>
       <div class="kv-row">
         <div class="kv-key">MTD / RP2D Objectives</div>
-        <div class="kv-val">MTD: — &middot; RP2D: Secondary outcome</div>
+        <div class="kv-val">MTD: Not specified &middot; RP2D: Secondary outcome</div>
       </div>
       <div class="kv-row">
         <div class="kv-key">Secondary Outcomes</div>
@@ -478,7 +505,7 @@
     </div>
 
     <div class="kv-card">
-      <div class="kv-title">Verbatim Registry Eligibility Criteria</div>
+      <div class="kv-title">Eligibility Criteria</div>
       <pre style="white-space:pre-wrap; font-family:var(--font-sans); font-size:13.5px; color:var(--text-med); line-height:1.6;">Key Inclusion Criteria:
 
 * \&gt; 18 years of age
@@ -496,10 +523,10 @@ Key Exclusion Criteria:
     </div>
 
     <footer>
-      <div><strong>ClinSight™</strong> · Primary Registry Fact Base &middot; <a href="https://pract.eu" style="color:inherit; text-decoration:underline;">PRACT</a></div>
+      <div><strong>ClinSight</strong> &middot; <a href="https://pract.eu" style="color:inherit; text-decoration:underline;">PRACT</a></div>
       <div>
-        <a href="../../explorer/">Explorer</a> &middot;
         <a href="../../compare/">Comparator</a> &middot;
+        <a href="../../explorer/">Trials explorer</a> &middot;
         <a href="../../jobs/">Careers</a> &middot;
         <a href="../../sitemap.xml">Sitemap</a>
       </div>
@@ -514,6 +541,14 @@ Key Exclusion Criteria:
         setTimeout(() => { b.textContent = 'Copy synopsis'; }, 2000);
       });
     }
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('clinsight_theme', next);
+    }
+    const savedTheme = localStorage.getItem('clinsight_theme');
+    if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
   </script>
 </body>
 </html>
