@@ -59,20 +59,20 @@
         .site-nav {
             border-bottom: 1px solid var(--border-subtle);
             background: var(--bg-base);
-            padding: 16px 24px;
+            padding: 18px 32px;
             position: sticky;
             top: 0;
             z-index: 100;
         }
         .nav-inner {
-            max-width: 860px;
+            max-width: 1040px;
             margin: 0 auto;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
         .nav-brand {
-            font-size: 18px;
+            font-size: 19px;
             font-weight: 700;
             letter-spacing: -0.02em;
             color: var(--cyan);
@@ -81,12 +81,12 @@
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 28px;
         }
         .nav-links a {
             color: var(--text-med);
             text-decoration: none;
-            font-size: 13.5px;
+            font-size: 14px;
             font-weight: 500;
             transition: color 0.15s;
         }
@@ -96,10 +96,10 @@
             background: transparent;
             border: 1px solid var(--border-subtle);
             color: var(--text-med);
-            padding: 5px 9px;
+            padding: 6px 11px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 12.5px;
             display: inline-flex;
             align-items: center;
         }
@@ -110,34 +110,34 @@
 
         main {
             flex: 1;
-            max-width: 860px;
+            max-width: 1040px;
             width: 100%;
             margin: 0 auto;
-            padding: 72px 24px 80px;
+            padding: 88px 32px 96px;
         }
 
         .hero {
-            margin-bottom: 64px;
+            margin-bottom: 84px;
         }
         .hero-title {
-            font-size: 38px;
+            font-size: 44px;
             font-weight: 800;
             letter-spacing: -0.03em;
-            line-height: 1.2;
+            line-height: 1.18;
             color: var(--text-high);
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
         .hero-sub {
-            font-size: 17px;
+            font-size: 18px;
             color: var(--text-med);
-            line-height: 1.6;
-            margin-bottom: 28px;
-            max-width: 680px;
+            line-height: 1.65;
+            margin-bottom: 36px;
+            max-width: 740px;
         }
         .hero-actions {
             display: flex;
             align-items: center;
-            gap: 18px;
+            gap: 24px;
             flex-wrap: wrap;
         }
         .btn-primary {
@@ -147,8 +147,8 @@
             background: var(--cyan);
             color: #07090e;
             font-weight: 600;
-            font-size: 14.5px;
-            padding: 10px 20px;
+            font-size: 15px;
+            padding: 12px 24px;
             border-radius: 8px;
             text-decoration: none;
             transition: opacity 0.15s;
@@ -158,7 +158,7 @@
         }
         .link-secondary {
             color: var(--text-med);
-            font-size: 14px;
+            font-size: 14.5px;
             text-decoration: none;
             font-weight: 500;
         }
@@ -168,28 +168,28 @@
         }
 
         .section-title {
-            font-size: 12px;
+            font-size: 12.5px;
             font-family: var(--font-mono);
             text-transform: uppercase;
             letter-spacing: 0.06em;
             color: var(--text-low);
-            margin-bottom: 16px;
-            padding-bottom: 8px;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
             border-bottom: 1px solid var(--border-subtle);
         }
 
         .item-list {
             display: flex;
             flex-direction: column;
-            gap: 14px;
-            margin-bottom: 48px;
+            gap: 6px;
+            margin-bottom: 72px;
         }
         .item-row {
             display: flex;
-            align-items: baseline;
+            align-items: center;
             justify-content: space-between;
-            gap: 16px;
-            padding: 12px 0;
+            gap: 24px;
+            padding: 22px 0;
             border-bottom: 1px solid var(--border-subtle);
             text-decoration: none;
             color: inherit;
@@ -200,20 +200,21 @@
         .item-main {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
         }
         .item-name {
-            font-size: 15px;
+            font-size: 16.5px;
             font-weight: 600;
             color: var(--text-high);
             transition: color 0.15s;
         }
         .item-desc {
-            font-size: 13px;
+            font-size: 14px;
             color: var(--text-low);
+            line-height: 1.55;
         }
         .item-action {
-            font-size: 13px;
+            font-size: 13.5px;
             color: var(--cyan);
             white-space: nowrap;
             font-weight: 500;
@@ -221,22 +222,22 @@
 
         .site-footer {
             border-top: 1px solid var(--border-subtle);
-            padding: 24px;
-            font-size: 12.5px;
+            padding: 28px 32px;
+            font-size: 13px;
             color: var(--text-low);
         }
         .footer-inner {
-            max-width: 860px;
+            max-width: 1040px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 16px;
         }
         .footer-links {
             display: flex;
-            gap: 18px;
+            gap: 24px;
         }
         .footer-links a {
             color: var(--text-low);
@@ -272,6 +273,26 @@
             .hero-actions {
                 gap: 14px;
             }
+            .item-list {
+                margin-bottom: 48px;
+            }
+            .item-row {
+                align-items: baseline;
+                padding: 14px 0;
+                gap: 16px;
+            }
+            .item-name {
+                font-size: 15px;
+            }
+            .item-desc {
+                font-size: 13px;
+            }
+            .site-footer {
+                padding: 20px 16px;
+            }
+            .footer-links {
+                gap: 16px;
+            }
         }
     </style>
 </head>
@@ -280,7 +301,7 @@
         <div class="nav-inner">
             <a href="/" class="nav-brand">ClinSight</a>
             <div class="nav-links">
-                <a href="/targets/mettl3-inhibitors/">METTL3 comparison</a>
+                <a href="/compare/">Comparator</a>
                 <a href="/explorer/">Trials explorer</a>
                 <button type="button" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle theme">Theme</button>
             </div>
@@ -292,13 +313,20 @@
             <h1 class="hero-title">Compare every trial in a drug class, side by side.</h1>
             <p class="hero-sub">Dose escalation designs, DLT evaluation windows, patient eligibility cutoffs, and primary endpoints on one screen — pulled directly from ClinicalTrials.gov.</p>
             <div class="hero-actions">
-                <a href="/targets/mettl3-inhibitors/" class="btn-primary">See the METTL3 comparison &rarr;</a>
+                <a href="/compare/" class="btn-primary">Explore drug class comparisons &rarr;</a>
                 <a href="/explorer/" class="link-secondary">Search 1,058 indexed clinical trials &rarr;</a>
             </div>
         </div>
 
         <div class="section-title">Curated Drug Class Comparisons</div>
         <div class="item-list">
+            <a href="/compare/myeloma-car-t-bispecific-adc/" class="item-row">
+                <div class="item-main">
+                    <span class="item-name">Multiple Myeloma (CAR-T, Bispecific &amp; ADC)</span>
+                    <span class="item-desc">Head-to-head comparison of 12 landmark trials evaluating BCMA and GPRC5D regimens across cilta-cel, ide-cel, teclistamab, elranatamab, talquetamab, and belantamab.</span>
+                </div>
+                <span class="item-action">Open comparison &rarr;</span>
+            </a>
             <a href="/targets/mettl3-inhibitors/" class="item-row">
                 <div class="item-main">
                     <span class="item-name">METTL3 Inhibitors (STC-15 vs EP102)</span>
@@ -345,9 +373,8 @@
         <div class="footer-inner">
             <div>ClinSight · Primary registry fact base · <a href="https://pract.eu" style="color:inherit; text-decoration:underline;">PRACT</a></div>
             <div class="footer-links">
-                <a href="/targets/mettl3-inhibitors/">METTL3 comparison</a>
-                <a href="/explorer/">Trials explorer</a>
                 <a href="/compare/">Comparator</a>
+                <a href="/explorer/">Trials explorer</a>
                 <a href="/jobs/">Careers</a>
                 <a href="/sitemap.xml">Sitemap</a>
             </div>
