@@ -14,9 +14,6 @@
     <meta property="og:type" content="article">
     
     <!-- Clean Font: Inter (Matched with vigisight.pract.eu) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Theme Initializer (Instant OS/Browser preference detection) -->
@@ -645,6 +642,103 @@
         }
 
     </style>
+<style id="clinsight-unified-nav">
+  html, body {
+    -webkit-text-size-adjust: 100% !important;
+    text-size-adjust: 100% !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    overflow-x: hidden;
+  }
+  .site-nav {
+    height: 60px !important;
+    padding: 0 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    background: var(--bg-base, #0b0f19) !important;
+    border-bottom: 1px solid var(--border-subtle, rgba(255,255,255,0.08)) !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 100 !important;
+    box-sizing: border-box !important;
+  }
+  .nav-inner {
+    max-width: 1080px !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+  .nav-brand, .nav-brand .logo-text {
+    font-size: 19px !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em !important;
+    color: var(--cyan, #38bdf8) !important;
+    text-decoration: none !important;
+    line-height: 1 !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  }
+  .nav-links {
+    display: flex !important;
+    align-items: center !important;
+    gap: 24px !important;
+  }
+  .nav-links a {
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: var(--text-med, #cbd5e1) !important;
+    text-decoration: none !important;
+    line-height: 1 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    white-space: nowrap !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  }
+  .nav-links a:hover, .nav-links a.active {
+    color: var(--cyan, #38bdf8) !important;
+    background: transparent !important;
+  }
+  .theme-toggle-btn {
+    font-size: 12.5px !important;
+    font-weight: 500 !important;
+    padding: 5px 10px !important;
+    border-radius: 6px !important;
+    border: 1px solid var(--border-subtle, rgba(255,255,255,0.08)) !important;
+    background: transparent !important;
+    color: var(--text-med, #cbd5e1) !important;
+    line-height: 1.2 !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  }
+  main, .container, .page-wrap, .footer-inner {
+    max-width: 1080px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  @media (max-width: 600px) {
+    .site-nav {
+      height: 50px !important;
+      padding: 0 16px !important;
+    }
+    .nav-brand, .nav-brand .logo-text {
+      font-size: 17.5px !important;
+    }
+    .nav-links {
+      gap: 14px !important;
+    }
+    .nav-links a {
+      font-size: 13px !important;
+    }
+    .theme-toggle-btn {
+      font-size: 12px !important;
+      padding: 4px 9px !important;
+    }
+  }
+</style>
 </head>
 <body>
     <!-- nct=NCT00539630 source=ClinicalTrials.gov protocol_strict=true -->
