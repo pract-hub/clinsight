@@ -1057,7 +1057,7 @@ def render_target_hub_html(models):
   <main class="container">
     <div class="page-head">
       <div>
-        <div class="eyebrow"><a href="../../compare/">Comparator</a> &middot; RNA Epigenetics</div>
+        <div class="eyebrow"><a href="../../compare/">Comparator</a> &middot; Epitranscriptomics</div>
         <h1>METTL3 inhibitors: trial design comparison</h1>
         <p class="head-sub">Side-by-side comparison of clinical trials of oral METTL3 RNA methyltransferase inhibitors: STORM Therapeutics&#x27; <strong>STC-15</strong> and Epics Therapeutics&#x27; <strong>EP102</strong>.</p>
       </div>

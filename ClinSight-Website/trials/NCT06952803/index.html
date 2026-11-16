@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NCT06952803 EvoPAR-PR02 — Study Protocol & Registry Profile | ClinSight</title>
+    <title>ClinSight</title>
     <meta name="description" content="Official ClinicalTrials.gov study protocol, primary design, enrollment criteria, and sponsor data for NCT06952803 (EvoPAR-PR02). Open-access research intelligence.">
     <link rel="canonical" href="https://clinsight.pract.eu/trials/NCT06952803/">
     
     <!-- Open Graph -->
-    <meta property="og:title" content="NCT06952803 EvoPAR-PR02 — Clinical Study Protocol">
+    <meta property="og:title" content="NCT06952803 EvoPAR-PR02 · Clinical Study Protocol">
     <meta property="og:description" content="Phase: Phase 3 · Modality: Targeted Oncology &amp; Systemic Therapy · Sponsor: AstraZeneca">
     <meta property="og:url" content="https://clinsight.pract.eu/trials/NCT06952803/">
     <meta property="og:type" content="article">
@@ -585,19 +585,73 @@
             border-top: 1px solid var(--border-subtle);
             font-family: var(--font-mono);
         }
+    
+        .site-nav {
+            border-bottom: 1px solid var(--border-subtle);
+            background: var(--bg-base);
+            padding: 18px 32px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-inner {
+            max-width: 1040px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-brand, .nav-brand .logo-text {
+            font-size: 19px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--cyan);
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+        .nav-links a {
+            color: var(--text-med);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.15s;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--cyan); }
+        .theme-toggle-btn {
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-med);
+            padding: 6px 11px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12.5px;
+            display: inline-flex;
+            align-items: center;
+        }
+        @media (max-width: 600px) {
+            .site-nav { padding: 12px 16px; }
+            .nav-links { gap: 14px; }
+            .nav-links a { font-size: 13px; white-space: nowrap; }
+        }
+
     </style>
 </head>
 <body>
     <!-- nct=NCT06952803 source=ClinicalTrials.gov protocol_strict=true -->
-    <div class="topbar">
-        <a href="../../"><i class="fa-solid fa-arrow-left"></i> ClinSight™ Clinical Trials Explorer</a>
-        <div class="topbar-right">
-            <button id="themeToggleTopbar" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle appearance">
-                <i class="fa-regular fa-sun"></i>
-            </button>
-            <a href="https://pract.eu" target="_blank">pract.eu <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:10px;"></i></a>
+        <nav class="site-nav" aria-label="Primary Navigation">
+        <div class="nav-inner">
+            <a href="/" class="nav-brand">ClinSight</a>
+            <div class="nav-links">
+                <a href="/compare/">Comparator</a>
+                <a href="/explorer/">Trials explorer</a>
+                <button type="button" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle theme">Theme</button>
+            </div>
         </div>
-    </div>
+    </nav>
 
     <div class="container">
         <div class="breadcrumb">
@@ -670,9 +724,9 @@
         </div>
 
         
-        <!-- Verbatim Registry Eligibility Criteria (ClinicalTrials.gov eligibilityModule) -->
+        
         <div class="card">
-            <div class="card-header"><i class="fa-solid fa-list-check"></i> Verbatim Protocol Eligibility Criteria</div>
+            <div class="card-header"><i class="fa-solid fa-list-check"></i> Eligibility Criteria</div>
             <div class="criteria-grid">
                 <div class="criteria-box">
                     <h4><i class="fa-solid fa-circle-check" style="color:var(--emerald);"></i> Key Inclusion Criteria</h4>
@@ -692,8 +746,8 @@
 
         <!-- Direct Primary Source Actions -->
         <div class="card">
-            <div class="card-header"><i class="fa-solid fa-file-contract"></i> Primary Sources & Statutory Registries</div>
-            <p style="font-size:13.5px; color:var(--text-med); margin-bottom:16px;">Access the verbatim statutory protocol records, regulatory postings, and peer-reviewed literature across statutory repositories:</p>
+            <div class="card-header"><i class="fa-solid fa-file-contract"></i> Official Trial Records</div>
+            <p style="font-size:13.5px; color:var(--text-med); margin-bottom:16px;">Access protocol documents, results, and peer-reviewed publications:</p>
             <div class="actions-row">
                 <a href="https://clinicaltrials.gov/study/NCT06952803" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
                     <i class="fa-solid fa-arrow-up-right-from-square"></i> Open ClinicalTrials.gov Record

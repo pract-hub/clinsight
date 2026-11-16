@@ -31,25 +31,23 @@
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
   }
-  @media (prefers-color-scheme: light) {
-    :root {
-      --bg-base: #f8fafc;
-      --bg-card: #ffffff;
-      --bg-subtle: #f1f5f9;
-      --border-subtle: #e2e8f0;
-      --border-hover: #cbd5e1;
-      --text-high: #0f172a;
-      --text-med: #475569;
-      --text-low: #64748b;
-      --cyan: #0284c7;
-      --cyan-glow: rgba(2, 132, 199, 0.1);
-      --purple: #9333ea;
-      --purple-glow: rgba(147, 51, 234, 0.1);
-      --emerald: #059669;
-      --emerald-glow: rgba(5, 150, 105, 0.1);
-      --amber: #d97706;
-      --amber-glow: rgba(217, 119, 6, 0.1);
-    }
+  :root[data-theme="light"] {
+    --bg-base: #f8fafc;
+    --bg-card: #ffffff;
+    --bg-subtle: #f1f5f9;
+    --border-subtle: #e2e8f0;
+    --border-hover: #cbd5e1;
+    --text-high: #0f172a;
+    --text-med: #475569;
+    --text-low: #64748b;
+    --cyan: #0284c7;
+    --cyan-glow: rgba(2, 132, 199, 0.1);
+    --purple: #9333ea;
+    --purple-glow: rgba(147, 51, 234, 0.1);
+    --emerald: #059669;
+    --emerald-glow: rgba(5, 150, 105, 0.1);
+    --amber: #d97706;
+    --amber-glow: rgba(217, 119, 6, 0.1);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -63,70 +61,61 @@
 
   /* Fixed Navigation Header */
   .site-nav {
+    border-bottom: 1px solid var(--border-subtle);
+    background: var(--bg-base);
+    padding: 18px 32px;
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(11, 15, 25, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border-subtle);
-  }
-  @media (prefers-color-scheme: light) {
-    .site-nav { background: rgba(248, 250, 252, 0.88); }
   }
   .nav-inner {
-    max-width: 1400px;
+    max-width: 1040px;
     margin: 0 auto;
-    padding: 0 24px;
-    height: 64px;
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
   .nav-brand {
-    display: flex;
-    align-items: baseline;
-    gap: 12px;
-    text-decoration: none;
-    color: inherit;
-  }
-  .logo-text {
     font-size: 19px;
     font-weight: 700;
-    letter-spacing: -0.03em;
-    color: var(--text-high);
+    letter-spacing: -0.02em;
+    color: var(--cyan);
+    text-decoration: none;
   }
-  .logo-text span { color: var(--cyan); }
-  .logo-tag {
-    font-size: 12.5px;
-    color: var(--text-med);
-    font-weight: 500;
-    padding-left: 12px;
-    border-left: 1px solid var(--border-subtle);
-  }
-  @media (max-width: 768px) { .logo-tag { display: none; } }
   .nav-links {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 28px;
   }
   .nav-links a {
     color: var(--text-med);
     text-decoration: none;
-    font-size: 13.5px;
+    font-size: 14px;
     font-weight: 500;
-    padding: 6px 14px;
-    border-radius: 8px;
-    transition: all 0.15s;
+    transition: color 0.15s;
   }
-  .nav-links a:hover {
-    color: var(--text-high);
-    background: var(--bg-subtle);
-  }
-  .nav-links a.active {
+  .nav-links a:hover, .nav-links a.active {
     color: var(--cyan);
-    background: var(--cyan-glow);
-    font-weight: 600;
+  }
+  .theme-toggle-btn {
+    background: transparent;
+    border: 1px solid var(--border-subtle);
+    color: var(--text-med);
+    padding: 6px 11px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12.5px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .theme-toggle-btn:hover {
+    color: var(--text-high);
+    border-color: var(--border-hover);
+  }
+  @media (max-width: 600px) {
+    .site-nav { padding: 12px 16px; }
+    .nav-links { gap: 14px; }
+    .nav-links a { font-size: 13px; white-space: nowrap; }
   }
 
   /* Main Container */
@@ -469,14 +458,13 @@
 <body>
 
 <!-- Global Navigation -->
-<nav class="site-nav">
+<nav class="site-nav" aria-label="Primary Navigation">
   <div class="nav-inner">
-    <a href="/" class="nav-brand">
-      <div class="logo-text">ClinSight</div>
-    </a>
+    <a href="/" class="nav-brand">ClinSight</a>
     <div class="nav-links">
       <a href="/compare/" class="active">Comparator</a>
       <a href="/explorer/">Trials explorer</a>
+      <button type="button" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle theme">Theme</button>
     </div>
   </div>
 </nav>
@@ -975,6 +963,15 @@
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeModal();
   });
+
+  function toggleTheme() {
+    const current = document.documentElement.getAttribute('data-theme') || 'dark';
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('clinsight_theme', next);
+  }
+  const saved = localStorage.getItem('clinsight_theme');
+  if (saved) document.documentElement.setAttribute('data-theme', saved);
 </script>
 
 </body>
